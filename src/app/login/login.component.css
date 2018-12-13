@@ -1,0 +1,44 @@
+#login{
+    height: 100vh;
+    /* background: #000; */
+}
+.mForm-field{
+    min-width: 150px;
+    max-width: 500px;
+    display: block;
+}
+
+.loginDiv{
+    position: relative;
+    top: 30%;
+    background-color: #fff;
+}
+
+h2{
+    position: relative;
+    font-weight: bold;
+    font-size: 22px
+}
+
+h2:after{
+    content: "";
+    width: 117px;
+    height: 2px;
+    left: 0;
+    top: 30px;
+    background-color: #000;
+    position: absolute;
+}
+
+.bannerDiv{
+    height: 100vh;
+    border: 2px solid #000;
+    border-bottom-left-radius: 30px;
+    border-top-left-radius: 30px;
+}
+
+#login .col-4.col-md-3,
+#login .col-8.col-md-9{
+    padding-left: 0;
+    padding-right: 0;
+}

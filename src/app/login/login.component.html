@@ -1,0 +1,59 @@
+
+<div id="login">
+  <div class="container-fluid">
+    <div class="row" >
+      <div class="col-12 col-sm-4 col-md-3">
+        <div class="loginDiv p-d">
+          <h2>LOGIN</h2>
+          <form class="pt-4" #f="ngForm" ngForm (ngSubmit)="onSubmit(f)">
+            <mat-form-field class="mForm-field">
+              <input matInput name="username" minlength="5" (change)="onChange(username)" ngModel #username="ngModel" required placeholder="Username"  [value]="" required>
+              <mat-icon matPrefix>person</mat-icon>
+              <mat-error *ngIf="username.touched && !username.valid">
+                <div *ngIf="username.errors.required">Username is required</div>
+                <div *ngIf="username.errors.minlength">Username cannot be less than {{ username.errors.minlength.requiredLength}}</div>
+              </mat-error>
+              <mat-hint *ngIf="!username.touched">Email/ReferenceNo/MatricNo</mat-hint>
+            </mat-form-field>
+          
+            <mat-form-field class="mForm-field">
+              <input matInput name="password" ngModel #password="ngModel" required type="password" placeholder="Password"  [value]="" required>
+              <mat-icon matPrefix>lock</mat-icon>
+              <mat-error *ngIf="password.touched && !password.valid">
+                <div *ngIf="password.errors.required">Password is required</div>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="mForm-field" *ngIf="userRole.value == 2">
+              <input matInput type="text" name="lecturerId" ngModel #lecturerId="ngModel" placeholder="Lecturer ID"  [value]="" required>
+              <mat-icon matPrefix>person_pin</mat-icon>
+              <mat-error *ngIf="lecturerId.touched && !lecturerId.valid">
+                <div *ngIf="lecturerId.errors.required">Lecturer Id is required</div>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="mForm-field">
+              <mat-select placeholder="Role" ngModel #userRole required name="position">
+                <mat-option [value]=""></mat-option>
+                <mat-option *ngFor="let role of roles" [value]="role.id">
+                  {{ role.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="userRole.touched && !userRole.valid">
+                <div *ngIf="userRole.errors.required">User Position is required</div>
+              </mat-error>
+            </mat-form-field>
+
+            <div class="text-right pt-4">
+              <button [disabled]="form.valid" mat-raised-button color="primary" class="button-rounded ">LOGIN</button>
+            </div>
+          </form>  
+        </div>
+      </div>
+      <div class="d-none d-sm-block col-sm-8 col-md-9">
+        <div class="bannerDiv">
+      </div>
+    </div>
+  </div>
+</div>
+

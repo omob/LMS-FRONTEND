@@ -1,0 +1,31 @@
+
+@import "~@angular/material/_theming";
+
+//Define custom typography
+$app-typography: mat-typography-config( 
+    $font-family: '"Montserrat", "Helvetica Neue", sans-serif'
+);
+@include angular-material-typography($app-typography);
+
+//end of custom typography
+
+//custom styles
+.p-d{
+    padding: 20px;
+}
+
+@mixin mordern-button($minWidth) {
+    border-radius: 20px;
+    min-width: $minWidth;
+    padding: 2px 16px;
+    outline: none;
+}
+
+.mat-form-field, .mat-option-text{
+    font-size: 15px;
+}
+.button-rounded.mat-raised-button.mat-primary{
+    @include mordern-button(100px);
+}
+
+
