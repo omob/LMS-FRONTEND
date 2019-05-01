@@ -1,0 +1,77 @@
+@import "../../../assets/css/materialize.min.css";
+
+#news{
+    /* height: 400px;
+    overflow-y: scroll; */
+    padding: 20px;
+}
+
+#news .mat-list-item{
+    background-color: whitesmoke;
+    margin-bottom: 10px;
+}
+
+.newsDiv h3{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.newsDiv{
+    background: #80808003;
+    padding: 5px 10px 20px;
+    box-shadow: 0px 0px 3px #ebebeb;
+    margin-bottom: 20px;
+    height: 250px;
+    width: 300px
+}
+.newsbody{
+    font-size: 14px !important;
+}
+
+p.date{
+    margin-bottom: 0px;
+    font-size: 10px;
+    color: #9b9b9b;
+    text-align: right
+}
+
+
+.newsbody{
+    font-size: 16px;
+}
+
+.newsbody a{
+    cursor: pointer;
+    color: #673ab7;
+}
+
+.indicators{
+position: absolute;
+bottom: -10%;
+}
+
+.indicators li{
+    display: inline;
+}
+
+.carousel .indicators{
+    position: absolute;
+    text-align: center;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+}
+
+.carousel .indicators .indicator-item {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    height: 8px;
+    width: 8px;
+    margin: 24px 4px;
+    background-color: rgba(255,255,255,0.5);
+    -webkit-transition: background-color .3s;
+    transition: background-color .3s;
+    border-radius: 50%;
+}

@@ -1,0 +1,301 @@
+<div id="contentDiv">
+  <h4 class="title">
+    <button mat-button  (click)="goBack()" class="go-back"> 
+      <mat-icon >navigate_before</mat-icon> 
+    </button>
+    EDIT COURSE INFO</h4>
+  <!-- <div  [ngStyle]="{'position': 'absolute', 'right': '20px', 'top': '10px'}">
+    <button 
+    (click) = "updateCourse()"
+    mat-raised-button class="button-rounded">UPDATE COURSE</button>
+  </div> -->
+  <div class="pt-1"></div>
+  <hr>
+  <div class="pt-2"></div>
+
+  <!-- <p *ngIf="error"> {{ error }} </p> -->
+  <!-- <mat-error class="padding" *ngIf="!course; else loaded">Loading...</mat-error> -->
+  <div class="example-loading-shade" *ngIf="isLoading || message || error; else loaded">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <mat-error class="padding" *ngIf="message || error">{{ message || error }}</mat-error>
+  </div>
+  <ng-template #loaded>
+    <div class="row pb-2 no-gutters">
+      <div class="col-12">
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <span class="title col-4" >COURSE NAME</span>
+              <span class="col"> {{ course.courseName }} </span>
+            </div>
+          </div>
+          <div class="col-3">
+            <span class="title">REGISTERED STUDENTS</span>
+            <span>{{ totalStudents}} </span>
+          </div>
+          <div class="col">
+            <div class="row">
+              <span class="title col-4"> SEMESTER </span>
+              <span class="col"> {{ semester | titlecase }} </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 pt-2">
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <span class="title col-4">COURSE CODE</span>
+                <span class="col"> {{ course.courseCode }} </span>
+              </div>
+            </div>
+            <div class="col-3">
+              <span class="title">SESSION</span>
+              <span> {{ session }} </span>
+            </div>
+            <div class="col">
+              <!-- <span class="title"> COURSE UNIT </span>
+              <span> {{ course.units }} </span> -->
+            </div>
+          </div>
+        </div>
+    </div> 
+    <hr>
+    <form [formGroup]="courseGroup">  
+      <mat-tab-group id="tabContent">
+        <mat-tab label="COURSE OUTLINE"> 
+          <div class="container-fluid">
+            <div class="row">
+              <div class="w-100 pt-2"></div>
+              <div class="col-lg-6">
+                <mat-card formGroupName="courseOutline" class="pt-3">
+                 <mat-card-content>
+                   <div class="row">
+                     <div class="col">
+                       <mat-form-field>
+                         <input type="text" matInput formControlName="week" placeholder="Week" #week matTooltip="Example - week one">
+                       </mat-form-field>
+                     </div>
+                     <div class="col">
+                       <mat-form-field>
+                         <input type="text" #outline matInput 
+                          (keyup.enter)="outline.value ? addOutline($event, outline): null" 
+                          placeholder="Press enter to add"  
+                          matTooltip="Press enter add a list of outlines under each week"
+                          >
+                       </mat-form-field>
+  
+                       <mat-list *ngIf="topics">
+                         <mat-list-item *ngFor="let t of topics.controls" (click)="removeOutline(t)" >
+                           {{ t.value.topic }}
+                             <mat-icon 
+                              matListIcon  
+                              matTooltip="Removes this outline from the list"
+                              >delete</mat-icon>
+                         </mat-list-item>
+                       </mat-list>
+                     </div>
+  
+                     <div class="w-100"></div>
+                     <div class="col">
+                       <button type="button" 
+                        class="button-rounded" 
+                        [disabled]="!week.value" 
+                        mat-raised-button color="primary" 
+                        id="addOutline" (click)="addToTable($event)"  
+                        matTooltip="Click to add the above outline to an array of existing outlines on the right"
+                        aria-label="Click to add the above outline to an array of existing outlines on the right">Add Outline</button>
+                     </div>
+                   </div>
+                 </mat-card-content>
+               </mat-card>
+              </div>
+              <!-- <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+                  <div class="example-box" *ngFor="let movie of movies" cdkDrag>{{movie}}</div>
+                </div> -->
+              <div class="col-lg-6">
+                <div *ngIf="course.courseOutline.length != 0; else noCourseOutline" class="w-100">
+                  <button type="button" 
+                    #updateCourse mat-raised-button 
+                    (click)="updateCourseOutline(updateCourse)" 
+                    class="inverse updateCourse"
+                    matTooltip="Click to save outlines"
+                    aria-label="Click to save outlines">
+                      UPDATE OUTLINE
+                  </button>
+                  <h3>Course Outlines</h3>
+                  <ul class="course_ul" 
+                    *ngIf="course.courseOutline.length != 0; else noCourseOutline" 
+                    cdkDropList
+                    (cdkDropListDropped)="drop($event)"> 
+                    <li *ngFor="let o of course.courseOutline" cdkDrag> <span class="header">{{ o.week }}</span>
+                      <button type="button" mat-button class="delete" (click)="removeFromTable(o)"         
+                        matTooltip="Deletes this outline from list">
+                          <mat-icon matListIcon >delete</mat-icon>
+                      </button>
+                      <ul>
+                        <li *ngFor="let outline of o.outlines"> {{ outline.topic }}</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                <ng-template #noCourseOutline>
+                    No course outline available at the moment...
+                </ng-template>
+              </div>
+            </div>
+          </div>
+          <div [ngStyle]="{'padding-top': '2em'}"></div>
+        </mat-tab>
+        <!-- COURSE MATERIAL  -->
+        <mat-tab label="COURSE MATERIALS"> 
+          <div class="container-fluid">
+            <div class="row pt-2">
+              <div class="col-lg-6">
+                <mat-card formGroupName="courseMaterial" class="pt-3 fillCourseAssignment">
+                    <mat-card-content>
+                      <div class="row">
+                        <div class="col-12">
+                          <mat-form-field>
+                            <input type="text" matInput formControlName="title" placeholder="Title" #title>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-12">
+                          <mat-form-field>
+                            <textarea  matInput formControlName="body" placeholder="Content"></textarea>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-12">
+                            <mat-hint>Attach document (PDF)</mat-hint>
+                            <p>
+                              <input type="file" placeholder=""
+                              (change)="onFileChange($event)">
+                            </p>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col pt-2">
+                          <button type="button" class="button-rounded" 
+                          [disabled]="!title.value" mat-raised-button color="primary" id="addMaterial" 
+                          (click)="addCourseMaterial()">Add Course Material</button>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+              </div>
+              <div class="col-lg-6">
+                <div *ngIf="course.courseMaterial; else noCourseMaterial"  class="w-100">
+                  <ul class="course_ul" *ngIf="course.courseMaterial.length != 0; else noCourseMaterial">
+                    <li *ngFor="let material of course.courseMaterial"> 
+                      <button type="button" mat-button class="delete" (click)="removeCourseMaterialDialog(material)">
+                        <mat-icon matListIcon matTooltip="Deletes the course material item">delete</mat-icon>
+                      </button>
+                      <span class="header">{{ material.title }}</span>
+                      <div class="body">
+                        <span> {{ material.body }} </span>
+                        <button *ngIf="material.file"
+                          mat-stroked-button color="primary" 
+                          (click)="openViewer(material)" 
+                          >View File</button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                <ng-template #noCourseMaterial>
+                  No course materials at the moment...
+                </ng-template>
+              </div>
+            </div>
+          </div> 
+          <div [ngStyle]="{'padding-top': '2em'}"></div>
+        </mat-tab>
+        <mat-tab label="ASSIGNMENTS"  > 
+          <div class="container">
+            <div class="row pt-2">
+              <div class="col-lg-6 fillCourseAssignment" formGroupName="courseAssignment">
+                <mat-form-field>
+                  <textarea rows="10" matInput name="question" #question formControlName="question" placeholder="Question"></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker" placeholder="Select Due Date" formControlName="dueDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <div>
+                  <button type="button" 
+                    mat-stroked-button 
+                    matTooltip="Publish Assignment" 
+                    (click)="addAssignment()" [disabled]="!question.value">ADD</button>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div *ngIf="course.assignment.length != 0; else noCourseAssignment" class="w-100">
+                  <button type="button" mat-raised-button class="inverse updateCourse" 
+                    (click)="updateAssignments()" 
+                    matTooltip="Updates changes made to the assignment list"> 
+                      UPDATE
+                  </button>
+
+                  <h3>Assignments</h3>
+                  <!-- <form #f="ngForm" > -->
+                    <ul class="course_ul courseAssignment" *ngIf="course.assignment.length != 0; else noCourseAssignment">
+                      <li *ngFor="let assignment of course.assignment" style="margin-bottom: 30px"> 
+                        <span class="header"> QUESTION 
+                          <button type="button" mat-icon-button (click)="deleteAssignment(assignment)">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </span>
+
+                        <div class="body">
+                          <mat-form-field class="w-100">
+                            <textarea matInput rows="7" [(ngModel)]="assignment.question" [ngModelOptions]="{standalone: true}" [value]="assignment.question" name="question"></textarea>
+                          </mat-form-field>
+                        </div>
+                        <div class="footer gray-1">
+                          <div>
+                            <!-- <span><mat-icon>schedule</mat-icon>
+                              Created Date: 
+                              <mat-form-field>
+                                <input matInput [matDatepicker]="picker1" placeholder="Select Due Date" [value]="assignment.createdDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                              </mat-form-field>
+                            </span> -->
+                            <span><mat-icon>timer</mat-icon>
+                              Due Date: 
+                              <mat-form-field>
+                                <input matInput [matDatepicker]="picker2" placeholder="change due date" [(ngModel)]="assignment.dueDate" [ngModelOptions]="{standalone: true}" name="dueDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                              </mat-form-field>
+                            </span>
+                          </div>
+                          <button type="button" mat-stroked-button color="basic">View Submissions</button>
+                        </div>
+                      </li>
+                    </ul>
+                  <!-- </form> -->
+                </div>
+                <ng-template #noCourseAssignment> No assignments given at the moment... </ng-template>
+              </div>
+            </div>
+          </div>
+          <div [ngStyle]="{'padding-top': '2em'}"></div>
+        </mat-tab>
+        <!-- <mat-tab label="REGISTERED STUDENTS"> 
+          <div class="container">
+            <div class="row pt-2">
+              <div class="w-100">
+
+              </div>
+            </div>
+          </div>
+          <div [ngStyle]="{'padding-top': '2em'}"></div>
+        </mat-tab> -->
+      </mat-tab-group>  
+    </form>
+
+  </ng-template>
+
+</div>

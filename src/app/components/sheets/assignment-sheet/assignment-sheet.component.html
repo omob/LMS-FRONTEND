@@ -1,0 +1,74 @@
+<div class="w-100" align="right">
+  <button mat-icon-button color="basic" class="close" matTooltip="close" (click)="close($event)"> 
+    <mat-icon>expand_more</mat-icon>
+  </button>
+</div>
+
+<div class="pt-3"></div>
+
+<p *ngIf="assignments.length == 0; else showTable"> No submission avaliable for this assignment</p>
+<ng-template #showTable>
+    <div class="pt-2"></div>
+    
+    <div class="w-80 m-auto" align="right">
+
+      <div align="left">
+        <button mat-stroked-button class="inverse" (click)="resetAssignment()" matTooltip="Undo's all changes">
+          <mat-icon>undo</mat-icon>
+          RESET
+        </button>
+        <button mat-stroked-button class="inverse" (click)="updateAssignment()" matTooltip="Saves Record">UPDATE 
+          <mat-icon>done</mat-icon>
+        </button>
+      </div>
+      <mat-form-field>
+        <input type="search" matInput  #search (keyup)="applyFilter(search.value)" placeholder="Search...">
+        <button mat-button *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.value=''; applyFilter(search.value)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <table align="center" mat-table [dataSource]="dataSource" class="pt-2 w-80 m-auto">
+      <ng-container matColumnDef="sn">
+        <th mat-header-cell *matHeaderCellDef> SN. </th>
+        <td mat-cell *matCellDef="let element; let i= index"> {{ i+1 }} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="fullname">
+          <th mat-header-cell *matHeaderCellDef> Full Name </th>
+          <td mat-cell *matCellDef="let element"> {{ element.fullname }} </td>
+        </ng-container>
+
+      <ng-container matColumnDef="matricNo">
+        <th mat-header-cell *matHeaderCellDef> Matric No</th>
+        <td mat-cell *matCellDef="let element"> {{ element.matricNo }} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="score">
+          <th mat-header-cell *matHeaderCellDef>Score </th>
+          <td mat-cell *matCellDef="let element">
+            <!-- {{ element.score }}  -->
+            <mat-form-field>
+              <input type="number" matInput placeholder="score"  [(ngModel)]="element.score" [value]="element.score" (change)="changed()">
+            </mat-form-field>
+          </td>
+      </ng-container>
+
+      <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element"> 
+          <button mat-stroked-button style="width: 100px" (click)=openViewer(element.file)> View File </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="tr-header"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;let i = index;let element" 
+        [ngClass]="i % 2==0 ? 'even':'odd'"> 
+          {{element | json}}
+      </tr>
+    </table>
+
+    <div class="w-80 m-auto">
+      <mat-paginator [length]="dataSource.data.length" [pageSize]="30"></mat-paginator>  
+    </div>
+  </ng-template>

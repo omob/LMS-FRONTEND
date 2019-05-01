@@ -1,0 +1,13 @@
+input[type="search"]{
+    padding: 18px 20px;
+    width: 90%;
+    font-size: 16px;
+    margin-bottom: 10px
+}
+
+.borderRow{
+    /* border: 1px solid rgb(185, 185, 185);
+    box-shadow: 0px 0px .4px rgb(221, 221, 221);; */
+    box-shadow: 0px 5px 10.4px 1px rgb(221, 221, 221);
+    padding: 20px 10px 10px;
+}

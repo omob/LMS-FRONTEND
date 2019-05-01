@@ -1,0 +1,59 @@
+<nav class="row no-gutters">
+    <div class="col-2 ">
+        <h4 class="p-2"> {{ appName }} </h4>
+    </div>
+    <div class="col" align="right">
+        <img width="40" height="40" class="img-rounded avatar">
+        <span class="username">{{ authService.loggedInUser().name }}</span>
+
+        <ul class="navbar-nav">
+          <li class="nav-item">
+              <div class="nav-icon-div col-xs-4">
+                  <button mat-icon-button [matMenuTriggerFor]="notifications" yPosition="above">
+                    <mat-icon class="dee-icon">notifications</mat-icon>
+                  </button>
+                  <mat-menu #notifications="matMenu">
+                    <button mat-menu-item>
+                      <mat-icon>dialpad</mat-icon>
+                      <span>Redial</span>
+                    </button>
+                    <button mat-menu-item disabled>
+                      <mat-icon>voicemail</mat-icon>
+                      <span>Check voicemail</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>notifications_off</mat-icon>
+                      <span>Disable alerts</span>
+                    </button>
+                  </mat-menu>
+                </div>
+          </li>
+          <li class="nav-item">
+              <div class="nav-icon-div col-xs-4">
+                  <button mat-icon-button [matMenuTriggerFor]="settings">
+                    <mat-icon class="dee-icon">settings</mat-icon>
+                  </button>
+                  <mat-menu #settings="matMenu">
+                    <button mat-menu-item>
+                      <mat-icon>dialpad</mat-icon>
+                      <span>Redial</span>
+                    </button>
+                    <button mat-menu-item disabled>
+                      <mat-icon>voicemail</mat-icon>
+                      <span>Check voicemail</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>notifications_off</mat-icon>
+                      <span>Disable alerts</span>
+                    </button>
+                  </mat-menu>
+              </div>
+          </li>
+          <li class="nav-item">
+              <button mat-icon-button (click)="authService.logout()">
+                <mat-icon class="dee-icon">logout</mat-icon>
+              </button>
+          </li>
+        </ul>
+    </div>
+  </nav>

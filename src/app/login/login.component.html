@@ -1,13 +1,17 @@
-
 <div id="login">
   <div class="container-fluid">
     <div class="row" >
-      <div class="col-12 col-sm-4 col-md-3">
+      <div class="col-12 col-sm-4 col-md-3 no-gutters">
         <div class="loginDiv p-d">
+          <div *ngIf="message" align="center" class="alert alert-danger pb-2">
+              <mat-error color="danger">
+                  {{ message.message }} 
+              </mat-error>
+          </div>
           <h2>LOGIN</h2>
-          <form class="pt-4" #f="ngForm" ngForm (ngSubmit)="onSubmit(f)">
+          <form class="pt-4" #f="ngForm" ngForm (change)="message.message? message.message = null: message.message" (ngSubmit)="onSubmit(f.value)">
             <mat-form-field class="mForm-field">
-              <input matInput name="username" minlength="5" (change)="onChange(username)" ngModel #username="ngModel" required placeholder="Username"  [value]="" required>
+              <input matInput name="username"  minlength="5" ngModel #username="ngModel" required placeholder="Username"  [value]="" required>
               <mat-icon matPrefix>person</mat-icon>
               <mat-error *ngIf="username.touched && !username.valid">
                 <div *ngIf="username.errors.required">Username is required</div>
@@ -17,14 +21,15 @@
             </mat-form-field>
           
             <mat-form-field class="mForm-field">
-              <input matInput name="password" ngModel #password="ngModel" required type="password" placeholder="Password"  [value]="" required>
+              <input matInput [type]="hide ? 'password': 'text'" name="password" ngModel #password="ngModel" required type="password" placeholder="Password"  [value]="" required>
               <mat-icon matPrefix>lock</mat-icon>
+              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
               <mat-error *ngIf="password.touched && !password.valid">
                 <div *ngIf="password.errors.required">Password is required</div>
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="mForm-field" *ngIf="userRole.value == 2">
+            <mat-form-field class="mForm-field" *ngIf="userRole.value == 'lecturer'">
               <input matInput type="text" name="lecturerId" ngModel #lecturerId="ngModel" placeholder="Lecturer ID"  [value]="" required>
               <mat-icon matPrefix>person_pin</mat-icon>
               <mat-error *ngIf="lecturerId.touched && !lecturerId.valid">
@@ -35,8 +40,8 @@
             <mat-form-field class="mForm-field">
               <mat-select placeholder="Role" ngModel #userRole required name="position">
                 <mat-option [value]=""></mat-option>
-                <mat-option *ngFor="let role of roles" [value]="role.id">
-                  {{ role.name }}
+                <mat-option *ngFor="let role of roles" [value]="role | lowercase">
+                  {{ role | titlecase }}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="userRole.touched && !userRole.valid">
@@ -44,13 +49,14 @@
               </mat-error>
             </mat-form-field>
 
-            <div class="text-right pt-4">
-              <button [disabled]="form.valid" mat-raised-button color="primary" class="button-rounded ">LOGIN</button>
+            <div class="text-right pt-4 relative" >
+              <button [disabled]="!f.valid || isDisabled" mat-raised-button color="primary" class="button-rounded ">LOGIN</button>
+              <span class="loading" *ngIf="isDisabled"></span>
             </div>
           </form>  
         </div>
       </div>
-      <div class="d-none d-sm-block col-sm-8 col-md-9">
+      <div class="d-none d-sm-block col-sm-8 col-md-9 no-gutters" style="padding: 0">
         <div class="bannerDiv">
       </div>
     </div>

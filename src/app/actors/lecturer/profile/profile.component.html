@@ -1,0 +1,300 @@
+<div id="contentDiv">
+
+  <h4 class="title">My Profile</h4>
+  <button routerLink='edit' mat-stroked-button  [ngStyle]="{'position': 'absolute', 'right': '10px', 'top': '10px'}">EDIT PROFILE</button>
+  
+  <mat-divider></mat-divider>
+  
+  <div class="example-loading-shade" *ngIf="isLoading || error; else loaded">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <mat-error class="padding" *ngIf="error">{{ error }}</mat-error>
+  </div>
+    
+  <ng-template #loaded>
+    <div class="row pb-2">
+      <div class="col-sm-3">
+        <div class="imageDiv">
+          <img class="img-rounded avatar" height="70" width="70">
+          <span class="title"> {{ user.title }}</span>
+          <span class="username">{{ user.name?.firstName }} {{ user.name?.lastName}}</span>
+          <span></span>
+        </div>
+      </div> 
+      <div class="subnav col">
+        <div class="row">
+          <div class="col">
+            <p>Phone</p>
+            <span class="">{{ user.mobile }}</span>
+          </div>
+          <div class="col">
+            <p>Email </p>
+            <span class="">{{ user.email }}</span>
+          </div>
+          <!-- <div class="col">
+            <p>MatricNo</p>
+            <span class="">{{ user.matricNo }}</span>
+          </div> -->
+          <div class="col">
+            <p>Department </p>
+            <span class="">{{ user.departmentId?.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pt-2"></div>
+    <mat-divider></mat-divider>
+
+    <mat-tab-group id="tabContent">
+      <mat-tab label="BIODATA"> 
+        <div class="container-fluid">
+          <div class="row pt-2">
+            <div class="col">
+              <mat-card>
+                <mat-card-content>
+                  <h4>Name</h4>
+                  <div class="row">
+                    <div class="col">
+                      <span>First Name</span>
+                      <p>{{ user.name?.firstName }}</p>
+                    </div>
+                    <div class="col">
+                      <span>Last Name</span>
+                      <p>{{ user.name?.lastName }}</p>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                      <span>Middle Name</span>
+                      <p>{{ user.name?.middleName }}</p>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+              <div class="pt-2"></div>
+              <mat-card>
+                <mat-card-content>
+                  <div class="row">
+                    <div class="col">
+                      <span>Gender</span>
+                      <p>{{ user.sex }}</p>
+                    </div>
+                    <div class="col">
+                      <span>Nationality</span>
+                      <p>{{ user.nationality }}</p>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                      <span>State of Origin</span>
+                      <p>{{ user.stateOfOrigin }}</p>
+                    </div>
+                    <div class="col">
+                      <span>Local Government</span>
+                      <p>{{ user.localGov }}</p>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+              <div class="pt-2"></div>
+            </div>
+            <div class="col-sm-5">
+              <mat-card>
+                  <mat-card-content>
+                    <h4>Contact</h4>
+                    <div class="row">
+                      <div class="col">
+                        <span>Mobile</span>
+                        <p>{{ user.mobile }}</p>
+                      </div>
+                      <div class="col">
+                        <span>Telephone</span>
+                        <p>{{ user.telephone }}</p>
+                      </div>
+                      <div class="w-100"></div>
+                      <div class="col">
+                        <span>Current Address</span>
+                        <p>
+                          {{ user.address_current?.line1 }} 
+                          {{ user.address_current?.line2 }},
+                          {{ user.address_current?.city }},
+                          {{ user.address_current?.country }}
+                        </p>
+                      </div>
+                      <div class="w-100"></div>
+                      <div class="col">
+                        <span>Permanent Address</span>
+                        <p>
+                            {{ user.address_permanent?.line1 }} 
+                            {{ user.address_permanent?.line2 }}
+                            {{ user.address_permanent?.city }}
+                            {{ user.address_permanent?.country }}
+                        </p>
+                      </div>
+                      <div class="w-100"></div>
+                      <div class="col">
+                          <span>Email</span>
+                          <p>{{ user.email }}</p>
+                        </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              <div class="pt-2"></div>
+              <mat-card *ngIf="user.nextOfKin">
+                  <mat-card-content>
+                    <h4>Next of Kin</h4>
+                    <div class="row">
+                      <div class="col">
+                        <span>First Name</span>
+                        <p>{{ user.nextOfKin?.firstName }}</p>
+                      </div>
+                      <div class="col">
+                        <span>Last Name</span>
+                        <p>{{ user.nextOfKin?.lastName }}</p>
+                      </div>
+                      <div class="w-100"></div>
+                      <div class="col">
+                        <span>Phone</span>
+                        <p>{{ user.nextOfKin?.phone }}</p>
+                      </div>
+                      <div class="col">
+                        <span>Relationship</span>
+                        <p>{{ user.nextOfKin?.relationship }}</p>
+                      </div>
+                      <div class="w-100"></div>
+                      <div class="col">
+                        <span>Email</span>
+                        <p>{{ user.nextOfKin?.email }}</p>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col">
+              <mat-card>
+                <mat-card-content>
+                  <h4>Programme</h4>
+                  <div class="row">
+                    <div class="col-12">
+                      <span>Course</span>
+                      <p>{{ user.programme?.name }} </p>
+                    </div>
+                    <div class="col-12">
+                      <span>Department</span>
+                      <p> {{ user.programme?.department }}</p>
+                    </div>
+                  </div>
+                </mat-card-content>
+                </mat-card>
+            </div>
+          </div>
+        </div>
+        <div [ngStyle]="{'padding-top': '2em'}"></div>
+      </mat-tab>
+      <mat-tab label="EDUCATION"> 
+        <div class="container-fluid">
+          <div class="row pt-2" *ngIf="user.education">
+            <div class="col" >
+              <mat-card>
+                <mat-card-content>
+                  <h4>Primary Education</h4>
+                  <div class="row">
+                    <div class="col">
+                       {{ user.education?.primary?.name }}
+
+                       <p *ngIf="user.education?.primary?.name == '' ">No primary education filled yet</p>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <div class="col">
+              <mat-card>
+                <mat-card-content>
+                  <h4>Secondary Education</h4>
+                  <div class="row">
+                    <div class="col">
+                      {{ user.education?.secondary?.name }}
+                      <p *ngIf="user.education?.secondary?.name == '' ">No secondary education filled yet</p>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <div class="col">
+              <mat-card>
+                <mat-card-content>
+                  <h4>Tertiary Education</h4>
+                  <div class="row">
+                    <div class="col">
+                      {{ user.education?.tertiary?.name }}
+                      <p *ngIf="user.education?.tertiary?.name == '' ">No tertiary education filled yet</p>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div> 
+        </div> 
+        <div [ngStyle]="{'padding-top': '2em'}"></div>
+      </mat-tab>
+      <mat-tab label="PROFESSIONAL PROFILE"> 
+        <div class="pt-4"></div>
+        <mat-card class="pt-3 col-lg-8">
+          <mat-card-content>
+            <div class="row">
+              <div class="pre-line" *ngIf="user.professionalSummary">
+                {{ user.professionalSummary }}
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div class="pt-2"></div>
+      </mat-tab>
+      <mat-tab label="DOCUMENTS">
+        <div class="container-fluid">
+          <h4 class="pt-2">List of Documents</h4>
+          <div class="row">
+            <div class="col-md-8">
+              <p *ngIf="user.documents.length == 0; else documents">You have not uploaded any documents yet</p>
+              
+              <ng-template #documents>
+                <table align="center" mat-table [dataSource]="user.documents" class="pt-2 mat-elevation-z8">
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="sn">
+                    <th mat-header-cell *matHeaderCellDef> SN. </th>
+                    <td mat-cell *matCellDef="let element; let i= index"> {{ i+1 }} </td>
+                  </ng-container>
+                
+                  <!-- Course Code Column -->
+                  <ng-container matColumnDef="docName">
+                    <th mat-header-cell *matHeaderCellDef> Doc Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.docName}} </td>
+                  </ng-container>
+                
+                  <!-- Status Status -->
+                  <ng-container matColumnDef="options">
+                      <th mat-header-cell *matHeaderCellDef> </th>
+                      <td mat-cell *matCellDef="let element"> 
+                          <button mat-stroked-button (click)="openViewer(element)" >VIEW</button>
+                          &nbsp;
+                          <button mat-stroked-button color="danger" (click)="removeDoc(element)">DELETE</button>
+                      </td>
+                  </ng-container>
+                
+                  <tr mat-header-row *matHeaderRowDef="['sn', 'docName', 'options']" class="tr-header"></tr>
+                  <tr mat-row *matRowDef="let row; columns: ['sn', 'docName', 'options'];"></tr>
+                </table>      
+              </ng-template>
+            </div>
+          </div>
+          <div [ngStyle]="{'padding-top': '2em'}"></div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>  
+  </ng-template>
+
+  <div class="row pt-3">
+    <div class="col-12 col-md-8">
+      <div class="row dashboardLinksDiv" align="center">
+      </div>
+    </div>
+  </div>
+</div>

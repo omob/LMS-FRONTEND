@@ -1,0 +1,15 @@
+<div style="max-width:400px;">
+  <h4 class="title">Reports</h4>
+  <div id="report">
+    <div *ngIf="authService.loggedInUser().position == 'student'">
+      <span id="span1">Current CGPA:
+        <span id="span2"> {{ cgpa }} </span>
+      </span>
+    </div>
+    <mat-divider></mat-divider>
+    <div [ngStyle]="{'min-height': '258px'}" >
+      <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="chartType" [legend]="pieChartLegend"
+      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" width="400" height="300"></canvas>
+    </div>    
+  </div>
+</div>

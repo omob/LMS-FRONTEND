@@ -1,0 +1,110 @@
+<div id="contentDiv">
+  <h4 class="title">My Courses</h4>
+  <div  [ngStyle]="{'position': 'absolute', 'right': '10px', 'top': '10px'}">
+    <button type="button" (click)="viewAll()" mat-stroked-button class="button-rounded">ASSIGNMENTS</button> &nbsp;
+    <button routerLink="/student/courses-register" mat-stroked-button class="button-rounded">ADD COURSE</button>
+  </div>
+
+  <mat-divider></mat-divider>
+  <div class="pt-2"></div>
+
+  <div class="example-loading-shade" *ngIf="isLoading || error; else loaded">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <mat-error class="padding" *ngIf="error">{{ error }}</mat-error>
+  </div>
+
+  <ng-template #loaded>
+    <div class="row">
+      <div class="col col-lg-8">
+        <form>
+          <div class="row">
+            <div class="col">
+              <span class="title">SESSION</span>
+              <mat-form-field>
+                <mat-select name="session" (selectionChange)="onSelectChange()" #session [(ngModel)]="_session" required [disabled]="error"> 
+                  <mat-option value=""></mat-option>
+                  <mat-option *ngFor="let s of sessionsList" [value]="s"> {{ s }}</mat-option>
+                  </mat-select>
+                <!-- <mat-error *ngIf="docN.touched && !docN.valid">
+                  <div *ngIf="docN.errors.required">Document name is required</div>
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <span class="title">SEMESTER</span>
+              <mat-form-field>
+                <mat-select name="semester" (selectionChange)="onSelectChange()" #semester [(ngModel)]="_semester" [disabled]="error" required> 
+                  <mat-option value=""> </mat-option>
+                  <mat-option *ngFor="let s of semestersList" [value]="s" > {{ s | titlecase }} </mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="docN.touched && !docN.valid">
+                  <div *ngIf="docN.errors.required">Document name is required</div>
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col col-lg-4">
+        <button 
+        (click)="viewAll()" 
+        type="button" 
+        [disabled]="error" 
+        mat-stroked-button class="button-rounded" 
+        [ngStyle]="{'position': 'absolute', 'right': '10px', 'top': '10px'}">VIEW ALL</button>
+      </div>
+    </div>
+    
+    <div class="row pt-3">
+      <div class="col-12 col-lg-8 pt-3" >
+    
+          <p *ngIf="coursesTable.length == 0; else showCourses">Add courses to view them here.</p>
+          <ng-template #showCourses>
+            <div [ngStyle]='{"height": "400px", "overflow": "auto"}'>
+              
+              <div class="pt-2"></div>
+  
+              <table align="center" mat-table [dataSource]="coursesTable" class="pt-2 mat-elevation-z8">
+  
+                <ng-container matColumnDef="sn">
+                  <th mat-header-cell *matHeaderCellDef> SN. </th>
+                  <td mat-cell *matCellDef="let element; let i= index"> {{ i+1 }} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="courseCode">
+                    <th mat-header-cell *matHeaderCellDef> Course Code </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.course.courseCode }} </td>
+                  </ng-container>
+  
+                <ng-container matColumnDef="courseName">
+                  <th mat-header-cell *matHeaderCellDef> Course Name </th>
+                  <td mat-cell *matCellDef="let element"> {{ element.course.courseName }} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="lecturer">
+                    <th mat-header-cell *matHeaderCellDef>Lecturer </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.lecturer?.name?.firstName }} {{ element.lecturer?.name?.lastName }}</td>
+                </ng-container>
+              
+                <ng-container matColumnDef="result">
+                    <th mat-header-cell *matHeaderCellDef>Result </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.result == '' ? 'Not SET' : element.result }} </td>
+                </ng-container>
+  
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;let i = index;let element" [routerLink]="['/student/courses', element.course._id]" [queryParams]="{session: _session, semester: _semester }" (click)="onClick(element)" [ngClass]="i % 2==0 ? 'even':'odd'"> {{element | json}}</tr>
+              
+              </table>  
+            </div>    
+          </ng-template>
+      </div>
+  
+      <div class="col-6 col-lg-4">
+        <report></report>
+        <div class="pt-3"></div>
+      </div>
+  
+    </div>
+  </ng-template>
+
+</div>

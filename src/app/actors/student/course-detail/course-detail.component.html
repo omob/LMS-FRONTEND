@@ -1,0 +1,181 @@
+<div id="contentDiv">
+  <h4 class="title">
+    <button mat-button  (click)="goBack()" class="go-back"> 
+      <mat-icon >navigate_before</mat-icon> 
+    </button>
+    Course
+  </h4>
+
+  <mat-divider></mat-divider>
+  
+  <div class="pt-2"></div>
+
+  <div class="example-loading-shade" *ngIf="isLoading || error; else loaded">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <mat-error class="padding" *ngIf="error">{{ error }}</mat-error>
+  </div>
+  
+  <ng-template #loaded>
+    <mat-error class="padding" *ngIf="message">{{ message }}</mat-error>
+    <div class="row pb-2 no-gutters">
+      <div class="col-12">
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <span class="title col-4" >COURSE NAME</span>
+              <span class="col"> {{ course.courseName }} </span>
+            </div>
+          </div>
+          <div class="col-3">
+            <span class="title">SEMESTER</span>
+            <span> {{ semester | titlecase }} </span>
+          </div>
+          <div class="col">
+            <div class="row">
+              <span class="title col-4"> LECTURER </span>
+              <span class="col"> {{ course.lecturer?.name?.firstName }} {{ course.lecturer?.name?.lastName }} </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 pt-2">
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <span class="title col-4">COURSE CODE</span>
+                <span class="col"> {{ course.courseCode }} </span>
+              </div>
+            </div>
+            <div class="col-3">
+              <span class="title">SESSION</span>
+              <span> {{ session }} </span>
+            </div>
+            <div class="col">
+              <span class="title"> COURSE UNIT </span>
+              <span> {{ course.units }} </span>
+            </div>
+          </div>
+        </div>
+      <!-- <div class="col-sm-3">
+        <div class="imageDiv">
+          <img class="img-rounded avatar" height="70" width="70">
+          <span class="title"> {{ user.title }}</span>
+          <span class="username">{{ user.name.firstName }} {{ user.name.lastName}}</span>
+          <span></span>
+        </div>
+      </div> 
+      <div class="subnav col">
+        <div class="row">
+          <div class="col">
+            <p>Phone</p>
+            <span class="">{{ user.mobile }}</span>
+          </div>
+          <div class="col">
+            <p>Email </p>
+            <span class="">{{ user.email }}</span>
+          </div>
+          <div class="col">
+            <p>MatricNo</p>
+            <span class="">{{ user.matricNo }}</span>
+          </div>
+          <div class="col">
+            <p>Programme </p>
+            <span class="">{{ user.programme.name }}</span>
+          </div>
+        </div>
+      </div> -->
+    </div>
+   
+    <mat-divider></mat-divider>
+  
+    <mat-tab-group id="tabContent">
+      <mat-tab label="COURSE OUTLINE"> 
+        <div class="container">
+          <div class="row pt-2">
+            <div *ngIf="course.courseOutline; else noCourseOutline" class="w-100">
+              <ul class="course_ul" *ngIf="course.courseOutline.length != 0; else noCourseOutline">
+                <li *ngFor="let o of course.courseOutline"> <span class="header">{{ o.week }}</span>
+                  <ul>
+                    <li *ngFor="let outline of o.outlines"> {{ outline.topic }}</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <ng-template #noCourseOutline>
+                No course outline available at the moment...
+            </ng-template>
+          </div>
+        </div>
+        <div [ngStyle]="{'padding-top': '2em'}"></div>
+      </mat-tab>
+      <mat-tab label="COURSE MATERIALS"> 
+        <div class="container">
+          <div class="row pt-2">
+            <div *ngIf="course.courseMaterial; else noCourseMaterial"  class="w-100">
+              <ul class="course_ul" *ngIf="course.courseMaterial.length != 0; else noCourseMaterial">
+                <li *ngFor="let material of course.courseMaterial"> 
+                  <span class="header">{{ material.title }}</span>
+                  <div class="body">
+                    <span> {{ material.body }} </span>
+                    <button 
+                      mat-stroked-button color="primary" 
+                      (click)="openViewer(material)" 
+                      >View File</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <ng-template #noCourseMaterial>
+              No course materials at the moment...
+            </ng-template>
+          </div>
+        </div> 
+        <div [ngStyle]="{'padding-top': '2em'}"></div>
+      </mat-tab>
+      <mat-tab label="ASSIGNMENTS"> 
+        <div class="container">
+          <div class="row pt-2">
+            <div class="w-100">
+              <div *ngIf="course.assignment.length != 0; else noCourseAssignment"  class="w-100">
+                <ul class="course_ul courseAssignment">
+                  <li *ngFor="let assignment of course.assignment" style="margin-bottom: 30px"> 
+                    <span class="header"> QUESTION </span>
+                    <div class="body">
+                      {{ assignment.question }}
+                    </div>
+                    <div class="footer gray-1">
+                      <div>
+                        <span><mat-icon>schedule</mat-icon>Created Date: {{ assignment.createdDate | date }} </span>
+                        <span class="primary-color">
+                          <span *ngIf="!isExpired(assignment.dueDate); else expired">
+                              <mat-icon>timer</mat-icon>
+                              Due Date: {{ assignment.dueDate | date }}
+                          </span>
+                          <ng-template #expired>Expired</ng-template>
+                        </span>
+                      </div>
+                      <button 
+                        mat-stroked-button 
+                        *ngIf="!isExpired(assignment.dueDate)" 
+                        (click)="expanded = !expanded">Submit
+                      </button>
+                      <ng-template #timeup>
+                        <mat-error>Expired</mat-error>
+                      </ng-template>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <ng-template #noCourseAssignment>
+                No course assignment at the moment...
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div [ngStyle]="{'padding-top': '2em'}"></div>
+      </mat-tab>
+
+    </mat-tab-group>  
+  </ng-template>
+
+</div>

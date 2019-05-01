@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>{{ data?.title }}</h2>
+<mat-dialog-content>
+  <p *ngIf="loading">Loading...</p>
+  <mat-error *ngIf="!error.success"> {{ error.message }}</mat-error>
+  <pdf-viewer [src]="data.url" 
+    [render-text]="true"
+    style="display: block;"
+    (after-load-complete)="callBackFn($event)"
+    (error) = "onError($event)"
+    [fit-to-page]="true"
+    [autoresize] = "true"
+    [zoom] = "1"
+    ></pdf-viewer>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="secondary" mat-dialog-close>Close</button>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <!-- <button mat-button [mat-dialog-close]="true">Yes</button> -->
+</mat-dialog-actions>

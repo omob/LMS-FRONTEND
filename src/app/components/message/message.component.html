@@ -1,0 +1,87 @@
+<div id="contentDiv">
+  <h4 class="title"> MESSAGE </h4>
+  <mat-divider></mat-divider>
+
+  <div class="row">
+    <div class="col-lg-8">
+
+      <p *ngIf="!currentChatUser; else showChat">Search or Select user to chat with from the list...</p>
+     
+      <ng-template #showChat>
+        <div class="chat-header">
+          <div class="imageDiv">
+            <img class="img-rounded avatar" height="70" width="70">
+            <div>
+              <span class="username"> {{ currentChatUser.username }} </span>
+              <span class="lead"> {{ currentChatUser.matric }} </span>
+              <span> {{ typing }} </span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="chat-body">
+          <div class="messageDiv" id="messageDiv" #messageDiv>
+              <p *ngIf="currentChatUser.messages.length == 0; else showMessages">No Interactions yet... </p>
+              <ng-template #showMessages>
+                <div *ngFor="let message of currentChatUser.messages; let i = index" 
+                  [ngClass]="{'self': message.from == authService.loggedInUser().name}" 
+                  (onload)="++i == messages.length-1 ? onfocus() : null"
+                  @fade>
+                    <h3 matLine>{{message.from}} </h3>
+                    <p matLine>
+                      <span class="pre-line"> {{message.content}} </span>
+                    </p>
+                    <span class="time"><mat-icon>access_time</mat-icon> {{ message.time | date:'shortTime' }}</span>
+                </div>
+              </ng-template>
+          </div>
+          <div class="footer">
+            <mat-form-field>
+              <textarea 
+                matInput placeholder="Enter your message" 
+                #textArea 
+                (keyup.enter)="sendMessage(textArea, messageDiv)" 
+                (keypress)="onChange($event)"></textarea>
+  
+              <button type="button" matSuffix mat-icon-button class="ftbtn">
+                <mat-icon>send</mat-icon>
+              </button>
+              <button type="button" matSuffix mat-icon-button class="ftbtn">
+                <mat-icon>attach_file</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+        </div>
+      </ng-template>
+      
+    </div>
+    <div class="col-lg-4" style="max-width: 450px;">
+     
+      <div style="height: 100px"></div>
+     
+      <mat-form-field class="search" align="right">
+        <input type="search" matInput  #search  placeholder="Search...">
+        <button mat-button *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.value='';">
+          <mat-icon>close</mat-icon>
+        </button>
+        <span matSuffix>
+          <mat-icon id="searchIcon">search</mat-icon>
+        </span>
+      </mat-form-field>
+      
+      <!-- Online List -->
+      <div class="onlinediv">
+        <h3> <span class="onlineicon" [ngClass]="'active'"></span>Online</h3>
+        <mat-list>
+          <mat-list-item *ngFor="let user of onlineusers" (click)="loadUser(user)">
+            <img matListAvatar src="" alt="" class="img-rounded avatar">
+            <h3 matLine> {{user.username}} </h3>
+          </mat-list-item>
+
+          <div class="pt-4"></div>
+          <a class="loadMore">Load More</a> 
+        </mat-list>
+      </div>
+    </div>
+  </div>
+</div>

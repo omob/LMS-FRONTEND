@@ -1,0 +1,9 @@
+<div style="text-align: center">
+  <h2 mat-dialog-title>Delete Item</h2>
+<mat-dialog-content>Are you sure ?</mat-dialog-content>
+<mat-dialog-actions class="pt-2">
+  <button mat-stroked-button mat-dialog-close>No</button> &nbsp;
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-stroked-button [mat-dialog-close]="true">Yes</button>
+</mat-dialog-actions>
+</div>

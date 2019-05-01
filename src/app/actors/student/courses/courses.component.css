@@ -1,0 +1,28 @@
+hr{
+    margin-top: 18px;
+}
+
+#report{
+    min-width: 250px;
+    max-width: 300px;
+}
+/* 
+@media (max-width: 600px){
+    #report{
+        min-width: 300px;
+    }
+} */
+
+.mat-table{
+    overflow: auto;
+    max-height: 500px;
+}
+
+tr.even{
+    background-color: #f8f8f8;
+}
+tr:hover{
+    background-color: #f8f8f8;
+    box-shadow: 0px 0px 1px #eee;
+    cursor: pointer;
+}

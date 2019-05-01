@@ -1,0 +1,240 @@
+<div id="contentDiv">
+  <h4 class="title">
+    <button mat-button  (click)="goBack()" class="go-back"> 
+      <mat-icon >navigate_before</mat-icon> 
+    </button>
+    Course Info</h4>
+  <div  [ngStyle]="{'position': 'absolute', 'right': '20px', 'top': '10px'}">
+    <button 
+    (click)="editCourse()"
+    mat-raised-button class="button-rounded inverse">EDIT COURSE</button>
+  </div>
+  <div class="pt-1"></div>
+
+  <mat-divider></mat-divider>
+  <div class="example-loading-shade" *ngIf="isLoading || message || error; else loaded">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <mat-error class="padding" *ngIf="message || error">{{ message || error }}</mat-error>
+  </div>
+  
+  <ng-template #loaded>
+    <div class="pt-2 gray-1"></div>
+    <div class="row pb-2 no-gutters gray-1 pl-2">
+      <div class="col-12">
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <span class="title col-4" >COURSE NAME</span>
+              <span class="col"> {{ course.courseName }} </span>
+            </div>
+          </div>
+          <div class="col-3">
+            <span class="title">REGISTERED STUDENTS</span>
+            <span>{{ totalStudents}} </span>
+          </div>
+          <div class="col">
+            <div class="row">
+              <span class="title col-4"> SEMESTER </span>
+              <span class="col"> {{ semester | titlecase }} </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 pt-2">
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <span class="title col-4">COURSE CODE</span>
+                <span class="col"> {{ course.courseCode }} </span>
+              </div>
+            </div>
+            <div class="col-3">
+              <span class="title">SESSION</span>
+              <span> {{ session }} </span>
+            </div>
+            <div class="col">
+              <!-- <span class="title"> COURSE UNIT </span>
+              <span> {{ course.units }} </span> -->
+            </div>
+          </div>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+  
+    <mat-tab-group id="tabContent">
+      <mat-tab label="COURSE OUTLINE"> 
+        <div class="container">
+          <div class="row pt-2">
+            <div *ngIf="course.courseOutline; else noCourseOutline" class="w-100">
+              <ul class="course_ul" *ngIf="course.courseOutline.length != 0; else noCourseOutline">
+                <li *ngFor="let o of course.courseOutline" class="gray-1"> <span class="header">{{ o.week }}</span>
+                  <ul>
+                    <li *ngFor="let outline of o.outlines"> {{ outline.topic }}</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <ng-template #noCourseOutline>
+                No course outline available at the moment...
+            </ng-template>
+          </div>
+        </div>
+        <div [ngStyle]="{'padding-top': '2em'}"></div>
+      </mat-tab>
+      <mat-tab label="COURSE MATERIALS"> 
+        <div class="container">
+          <div class="row pt-2">
+            <div *ngIf="course.courseMaterial; else noCourseMaterial"  class="w-100">
+              <ul class="course_ul" *ngIf="course.courseMaterial.length != 0; else noCourseMaterial">
+                <li *ngFor="let material of course.courseMaterial" class="gray-1"> 
+                  <span class="header">{{ material.title }}</span>
+                  <div class="body">
+                    <span> {{ material.body }} </span>
+                    <div class="pt-2"></div>
+                    <button *ngIf="material.file"
+                      mat-stroked-button color="primary" 
+                      (click)="openViewer(material)" 
+                      >View File</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <ng-template #noCourseMaterial>
+              No course materials at the moment...
+            </ng-template>
+          </div>
+        </div> 
+        <div [ngStyle]="{'padding-top': '2em'}"></div>
+      </mat-tab>
+      <mat-tab label="ASSIGNMENTS"> 
+        <div class="container">
+          <div class="row pt-2">
+            
+            <div *ngIf="course.assignment?.length != 0; else noCourseAssignment"  class="w-100">
+              <ul class="course_ul courseAssignment">
+                <li *ngFor="let assignment of course.assignment"> 
+                  <span class="header"> QUESTION </span>
+                  <div class="body">
+                    {{ assignment.question }}
+                  </div>
+                  <!-- <textarea [(ngModel)]="test" ></textarea> -->
+                  <div class="footer gray-1">
+                    <div>
+                      <span><mat-icon>schedule</mat-icon>Created Date: {{ assignment.createdDate | date }} </span>
+                      <span class="primary-color"><mat-icon>timer</mat-icon>Due Date: {{ assignment.dueDate | date }}</span>
+                    </div>
+                    <button mat-stroked-button (click)="openBottomSheet(assignment.id)">View Submissions</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <ng-template #noCourseAssignment>
+              No course assignments at the moment...
+            </ng-template>
+          </div>
+        </div>
+        <div [ngStyle]="{'padding-top': '2em'}"></div>
+      </mat-tab>
+      <mat-tab label="REGISTERED STUDENTS"> 
+        <div class="container">
+          <div class="row pt-2">
+            <div class=" w-100">
+              <p *ngIf="registeredStudents.length == 0; else showCourses">No record available to show at the moment</p>
+              <ng-template #showCourses>
+                <div class="pt-2"></div>
+
+                <div class="w-100 m-auto" align="right">
+                  <mat-form-field>
+                    <input type="search" matInput  #search (keyup)="applyTableFilter(search.value)" placeholder="Search...">
+                    <button mat-button *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.value=''; applyTableFilter(search.value)">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+
+                <table align="center" mat-table [dataSource]="dataSource" class="pt-2 w-100">
+                  <ng-container matColumnDef="sn">
+                    <th mat-header-cell *matHeaderCellDef> SN. </th>
+                    <td mat-cell *matCellDef="let element; let i= index"> {{ i+1 }} </td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="fullname">
+                      <th mat-header-cell *matHeaderCellDef> Full Name </th>
+                      <td mat-cell *matCellDef="let element"> {{ element.fullname }} </td>
+                    </ng-container>
+
+                  <ng-container matColumnDef="matricNo">
+                    <th mat-header-cell *matHeaderCellDef> Matric No</th>
+                    <td mat-cell *matCellDef="let element"> {{ element.matricNo }} </td>
+                  </ng-container>
+    
+                  <ng-container matColumnDef="assignments">
+                    <th mat-header-cell *matHeaderCellDef> Assignments</th>
+                    <td mat-cell *matCellDef="let element"> {{ element.assignments }} </td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="attendance">
+                      <th mat-header-cell *matHeaderCellDef>Attendance </th>
+                      <td mat-cell *matCellDef="let element">{{ element.attendance }}</td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="tests">
+                      <th mat-header-cell *matHeaderCellDef>Tests </th>
+                      <td mat-cell *matCellDef="let element"> {{ element.tests }} </td>
+                  </ng-container>
+    
+                  <ng-container matColumnDef="exams">
+                      <th mat-header-cell *matHeaderCellDef>Exams </th>
+                      <td mat-cell *matCellDef="let element"> {{ element.exams }} </td>
+                  </ng-container>
+    
+                  <ng-container matColumnDef="grade">
+                      <th mat-header-cell *matHeaderCellDef>Grade </th>
+                      <td mat-cell *matCellDef="let element"> {{ element.grade }} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="info">
+                      <th mat-header-cell *matHeaderCellDef> </th>
+                      <td mat-cell *matCellDef="let element" width="10"> 
+                        <button mat-icon-button [matMenuTriggerFor]="options" class="more_button" yPosition="right">
+                          <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #options="matMenu">
+                          <button mat-menu-item>
+                            <mat-icon>assignment_turned_in</mat-icon>
+                            <span>View Assignments </span>
+                          </button>
+                          <button mat-menu-item>
+                            <mat-icon>edit</mat-icon>
+                            <span>View Tests</span>
+                          </button>
+                          <button mat-menu-item>
+                            <mat-icon>ballot</mat-icon>
+                            <span>View Attendance</span>
+                          </button>
+                          <button mat-menu-item>
+                            <mat-icon>message</mat-icon>
+                            <span>Send Message</span>
+                          </button>
+                        </mat-menu>
+                      </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="tr-header"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;let i = index;let element" 
+                    [ngClass]="i % 2==0 ? 'even':'odd'"> 
+                      {{element | json}}
+                  </tr>
+                
+                </table>
+              </ng-template>
+            </div>
+            </div>
+            <mat-paginator [length]="registeredStudents.length" [pageSize]="30"></mat-paginator>  
+          </div>
+        <div [ngStyle]="{'padding-top': '2em'}"></div>
+      </mat-tab>
+    </mat-tab-group>  
+  </ng-template>
+
+</div>

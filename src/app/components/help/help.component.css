@@ -1,0 +1,20 @@
+.contain{
+    position: absolute;
+    /* width: 100%; */
+    padding: 10%;
+    text-align: center;
+}
+
+.contain .containChild h2{
+    font-size: 3em
+}
+
+.footer{
+    position: relative;
+    align-items: center;
+    top: 100%;
+}
+
+.footer button{
+    width: 150px;
+}

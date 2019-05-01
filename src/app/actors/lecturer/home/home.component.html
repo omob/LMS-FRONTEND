@@ -1,0 +1,102 @@
+<div id="contentDiv">
+  <!-- <div class="full preloader">
+    <span class="loading"></span>
+  </div> -->
+  <h4 class="title">Lecturer's Dashboard</h4>
+  <!-- <hr> -->
+  <mat-divider></mat-divider>
+  <div class="row pt-3">
+    <div class="col-12 col-lg-8">
+      <div class="row dashboardLinksDiv" align="center">
+        <div class="col-sm-6 col-md-4 col-12">
+          <mat-card routerLink="/lecturer/attendance" matRipple  [matRippleCentered]="centered">
+            <mat-card-content>
+              <mat-icon>
+               assessment
+              </mat-icon>
+              <p class="title"> ATTENDANCE</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-sm-6 col-md-4 col-12">
+          <mat-card routerLink="/lecturer/courses" matRipple  [matRippleCentered]="centered">
+            <mat-card-content>
+              <mat-icon>
+                  library_books
+              </mat-icon>
+              <p class="title"> MY COURSES</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-sm-6 col-md-4 col-12">
+          <mat-card routerLink="/lecturer/result" matRipple  [matRippleCentered]="centered">
+            <mat-card-content>
+              <mat-icon class="md-36">
+                assignment_turned_in
+              </mat-icon>
+              <p class="title"> RESULTS</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="w-100 d-none d-md-block"></div> <!-- breaker-->
+
+        <div class="col-sm-6 col-md-4 col-12">
+            <mat-card routerLink="/lecturer/analysis" matRipple  [matRippleCentered]="centered">
+              <mat-card-content>
+                <mat-icon>
+                  show_chart
+                </mat-icon>
+                <p class="title"> BEHAVIORAL ANALYSIS </p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-sm-6 col-md-4 col-12">
+            <mat-card routerLink="/lecturer/assignment" matRipple  [matRippleCentered]="centered">
+              <mat-card-content>
+                <mat-icon> assignment
+                </mat-icon>
+                <p class="title"> ASSIGNMENTS</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-sm-6 col-md-4 col-12">
+            <mat-card matRipple  [matRippleCentered]="centered">
+              <mat-card-content>
+                <mat-icon>
+                event
+                </mat-icon>
+                <p class="title"> NEWS & EVENTS</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+      </div>
+
+      <mat-divider></mat-divider>
+      <div class="pt-3"></div>
+
+      <h4 class="title">News & Events</h4>
+      <news></news>
+      <!-- <ng-template #showEvents>
+        <mat-list>
+          <mat-list-item>
+            <h5 mat-line>Introduction to ....</h5>
+            <p mat-line>24-07-2019</p>
+          </mat-list-item>
+        </mat-list>
+      </ng-template>
+      <p  *ngIf="!events.length; else showEvents">No info at the momemnt... Check back later.</p> -->
+
+    </div>
+    <div class="col-12 col-lg-4" style="max-width: 400px">
+      <report></report>
+      <div class="pt-3"></div>
+      
+      <h4 class="title">Calender</h4>
+      <div class="calender">
+          <mat-calendar [selected]="" (selectedChange)="selectedDate = $event">
+          </mat-calendar>
+      </div>
+    </div>
+  </div>
+</div>

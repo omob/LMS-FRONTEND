@@ -1,0 +1,12 @@
+#span1{
+    display: block;
+    font-weight: bold;
+    padding: 17px;
+}
+
+#span2{
+    float: right;
+    margin-right: 10px;
+    color: #ffa1b5;
+    font-size: 20px;
+}

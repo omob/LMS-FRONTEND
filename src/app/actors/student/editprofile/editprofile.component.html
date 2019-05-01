@@ -1,0 +1,503 @@
+
+<div id="contentDiv">
+  <div class="example-loading-shade" *ngIf="isLoading || error; else loaded">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <mat-error class="padding" *ngIf="error">{{ error }}</mat-error>
+  </div>
+   
+  <ng-template #loaded>
+    <mat-error class="pt-2" align="center"*ngIf="message" >{{ message }}</mat-error>
+    
+    <form ngForm #f="ngForm">
+      <h4 class="title">
+        <button mat-button  (click)="goBack()" class="go-back"> 
+          <mat-icon >navigate_before</mat-icon> 
+        </button>
+        Edit Profile
+      </h4>
+      <button [disabled]="!f.valid" (click)="update()" mat-stroked-button color="secondary"  [ngStyle]="{'position': 'absolute', 'right': '10px', 'top': '10px'}">UPDATE</button>
+      
+      <mat-divider></mat-divider>
+      
+      <div class="row pb-2">
+        <div class="col-sm-3">
+          <div class="imageDiv">
+            <img class="img-rounded avatar" height="70" width="70">
+            <span class="title"> {{ user.title }} </span>
+            <span class="username">{{ user.name.firstName }} {{ user.name.lastName}}</span>
+            <span></span>
+          </div>
+        </div> 
+        <div class="subnav col">
+          <div class="row">
+            <div class="col">
+              <p>Phone</p>
+              <span class="">{{ user.mobile }}</span>
+            </div>
+            <div class="col">
+              <p>Email </p>
+              <span class="">{{ user.email }}</span>
+            </div>
+            <div class="col">
+              <p>MatricNo</p>
+              <span class="">{{ user.matricNo }}</span>
+            </div>
+            <div class="col">
+              <p>Programme </p>
+              <span class="">{{ user.programme.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pt-2"></div>
+      
+      <mat-divider></mat-divider>
+
+      <mat-tab-group id="tabContent">
+        <mat-tab label="BIODATA"> 
+          <div class="container">
+            <div class="row pt-2">
+              <div class="col">
+                <mat-card>
+                  <mat-card-content>
+                    <h4>Name</h4>
+                    <div class="row">
+                      
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput name="firstName" #firstName [(ngModel)]="user.name.firstName" placeholder="First Name" required> 
+                          <mat-error *ngIf="firstName.touched && !firstName.valid">
+                            <div *ngIf="firstName.errors.required">FirstName is required</div>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput name="lastName" #lastName [(ngModel)]="user.name.lastName" placeholder="Last Name" required> 
+                          <mat-error *ngIf="lastName.touched && !lastName.valid">
+                            <div *ngIf="lastName.errors.required">Last Name is required</div>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      
+                      <div class="w-100"></div>
+                      
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput name="middleName" #middleName [(ngModel)]="user.name.middleName" placeholder="Middle Name" required> 
+                          <mat-error *ngIf="middleName.touched && !middleName.valid">
+                            <div *ngIf="middleName.errors.required">Middle Name is required</div>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput name="title" #title [(ngModel)]="user.title" placeholder="Title" required> 
+                          <mat-error *ngIf="title.touched && !title.valid">
+                            <div *ngIf="title.errors.required">Title is required</div>
+                          </mat-error>
+                          <mat-hint>(Mr, Mrs, Miss)</mat-hint>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="w-100"></div>
+
+                      
+                      <div class="col">
+                        <mat-form-field>
+                          <mat-select name="gender" #gender [(ngModel)]="user.sex" placeholder="Gender" required> 
+                            <mat-option value="Male"> Male </mat-option>
+                            <mat-option value="Female"> Female </mat-option>
+                            <mat-option value="Other"> I don't know </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="gender.touched && !gender.valid">
+                            <div *ngIf="gender.errors.required">Gender is required</div>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col" *ngIf="nationalities">
+                        <mat-form-field class="mForm-field" >
+                          <mat-select placeholder="Nationality" (selectionChange) ="getState()" [(ngModel)]="user.nationality" #nationality required name="nationality">
+                            <mat-option *ngFor="let n of nationalities; let i = index;" [value]="n.nationality">
+                              {{ n.nationality }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="nationality.touched && !nationality.valid">
+                            <div *ngIf="nationality.errors.required">Nationality is required</div>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="w-100"></div>
+
+                      <div class="col" *ngIf="nationalities">
+                        <mat-form-field class="mForm-field">
+                          <mat-select placeholder="State of Origin" [(ngModel)]="user.stateOfOrigin" #stateOfOrigin required name="stateOfOrigin">
+                            <mat-option [value]="others">No Selection</mat-option>
+                            <mat-option *ngFor="let n of states" [value]="n">
+                              {{ n }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="stateOfOrigin.touched && !stateOfOrigin.valid">
+                            <div *ngIf="stateOfOrigin.errors.required">State Of Origin is required</div>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col">
+                        <mat-form-field class="mForm-field">
+                          <mat-select placeholder="Local Government" [(ngModel)]="user.localGov" #localGov name="localGov">
+                            <mat-option [value]="">No Selection</mat-option>
+                            <mat-option *ngFor="let n of states" [value]="n">
+                              {{ n }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+                
+                <div class="pt-2"></div>
+
+                <mat-card *ngIf="user.nextOfKin">
+                  <mat-card-content>
+                    <h4>Next of Kin</h4>
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput name="nextOfKinFName" [(ngModel)]="user.nextOfKin.firstName" placeholder="First Name"> 
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput name="nextOfKinLName" [(ngModel)]="user.nextOfKin.lastName" placeholder="Last Name"> 
+                        </mat-form-field>
+                      </div>
+                      <div class="w-100"></div>
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput type="tel" name="nextOfKinLName" [(ngModel)]="user.nextOfKin.phone" placeholder="Mobile"> 
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput name="nextOfKinRel" [(ngModel)]="user.nextOfKin.relationship" placeholder="Relationship"> 
+                        </mat-form-field>
+                      </div>
+                      <div class="w-100"></div>
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput type="email" name="nextOfKinEmail" [(ngModel)]="user.nextOfKin.email" placeholder="Email"> 
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+
+                <div class="pt-2"></div>
+
+                <mat-card>
+                  <mat-card-content>
+                    <h4>Sponsor</h4>
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput name="sponsorFname" #sFName [(ngModel)]="user.sponsor.firstName" placeholder="First Name"> 
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput name="sponsorLname" #sLName [(ngModel)]="user.sponsor.lastName" placeholder="Last Name"> 
+                        </mat-form-field>
+                      </div>
+                      <div class="w-100"></div>
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput name="sponsorFname" #sEmail [(ngModel)]="user.sponsor.email" placeholder="Email"> 
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field>
+                          <input matInput name="sponsorMobile" #sMobile [(ngModel)]="user.sponsor.phone" placeholder="Mobile"> 
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+              
+              <div class="col">
+                <mat-card>
+                    <mat-card-content>
+                      <h4>Contact INFO</h4>
+                      <div class="row">
+                        <div class="col">
+                          <mat-form-field>
+                            <input matInput type="tel" name="mobile" #mobile [(ngModel)]="user.mobile" placeholder="Mobile" required> 
+                            <mat-error *ngIf="mobile.touched && !mobile.valid">
+                              <div *ngIf="mobile.errors.required">Mobile is required</div>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field>
+                            <input matInput type="tel" name="telephone" #telephone [(ngModel)]="user.telephone" placeholder="Telephone"> 
+                            <mat-error *ngIf="telephone.touched && !telephone.valid">
+                              <!-- <div *ngIf="telephone.errors.required">Telephone is required</div> -->
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="w-100"></div>
+                        
+                        <div class="col-12">
+                          <span>Current Address</span>
+                          <mat-form-field class="example-full-width w-100">
+                            <textarea matInput placeholder="Line 1" name="addresscline1" #addresscline1 [(ngModel)]="user.address_current.line1" required>1600 Amphitheatre Pkwy</textarea>
+                            <mat-error *ngIf="addresscline1.touched && !addresscline1.valid">
+                              <div *ngIf="addresscline1.errors.required">Address is required</div>
+                            </mat-error>
+                          </mat-form-field>
+                          <mat-form-field class="example-full-width w-100">
+                            <textarea matInput placeholder="Line 2"  name="addresscline2" [(ngModel)]="user.address_current.line2"></textarea>
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input matInput placeholder="City" name="addressccity" [(ngModel)]="user.address_current.city" required>
+                            <mat-error *ngIf="addresscline1.touched && !addresscline1.valid">
+                              <div *ngIf="addresscline1.errors.required">City is required</div>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input matInput placeholder="State" name="addresscstate" [(ngModel)]="user.address_current.state" required>
+                          </mat-form-field>
+                        </div>
+                        <div class="w-100"></div>
+
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input matInput #postalCode  name="addresscpostal" [(ngModel)]="user.address_current.postalCode" maxlength="5" placeholder="Postal Code" >
+                            <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+                          </mat-form-field>
+                        </div>
+                        
+                        <div class="w-100 pt-2"></div>
+                        <div class="col-12">
+                          <span>Permanent Address</span>
+                          <mat-form-field class="example-full-width w-100">
+                            <textarea matInput placeholder="Address" name="addresscline1" #addresspline1 [(ngModel)]="user.address_permanent.line1" required>1600 Amphitheatre Pkwy</textarea>
+                            <mat-error *ngIf="addresspline1.touched && !addresspline1.valid">
+                              <div *ngIf="addresspline1.errors.required">Address is required</div>
+                            </mat-error>
+                          </mat-form-field>
+                          <mat-form-field class="example-full-width w-100">
+                            <textarea matInput placeholder="Address 2"  name="addresspline2" [(ngModel)]="user.address_permanent.line2"></textarea>
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input matInput placeholder="City" name="addresspcity" [(ngModel)]="user.address_permanent.city">
+                          </mat-form-field>
+                          <mat-form-field class="example-full-width">
+                            <input matInput placeholder="State" name="addresspstate" [(ngModel)]="user.address_permanent.state">
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="example-full-width">
+                            <input matInput #postalCode  name="addressppostal" [(ngModel)]="user.address_permanent.postalCode" maxlength="5" placeholder="Postal Code" >
+                            <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+
+                  <div class="pt-2"></div>
+
+                </div>
+                
+                <div class="pt-2"></div>
+                
+              </div>
+              <!-- <div class="col">
+                <mat-card>
+                  <mat-card-content>
+                    <h4>Programme</h4>
+                    <div class="row">
+                      <div class="col-12">
+                        <span>Course</span>
+                        <p>{{ user.programme?.name }} </p>
+                      </div>
+                      <div class="col-12">
+                        <span>Department</span>
+                        <p> {{ user.programme?.department }}</p>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                  </mat-card>
+              </div> -->
+
+
+          </div>
+          <div [ngStyle]="{'padding-top': '2em'}"></div>
+        </mat-tab>
+        <mat-tab label="EDUCATION"> 
+          <div class="container">
+            <div class="row pt-2">
+              <div class="col">
+                <mat-card>
+                  <mat-card-content>
+                    <h4>Primary Education</h4>
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <textarea matInput placeholder="Primary Education" name="primary" [(ngModel)]="user.education.primary.name"></textarea>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+              <div class="col">
+                <mat-card>
+                  <mat-card-content>
+                    <h4>Secondary Education</h4>
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <textarea matInput placeholder="Seconday Education" name="secondary" [(ngModel)]="user.education.secondary.name"></textarea>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+              <div class="col">
+                <mat-card>
+                  <mat-card-content>
+                    <h4>Tertiary Education</h4>
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="example-full-width">
+                          <textarea matInput placeholder="Tertiary Education" name="tertiary" [(ngModel)]="user.education.tertiary.name"></textarea>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div> 
+          </div> 
+          <div [ngStyle]="{'padding-top': '2em'}"></div>
+        </mat-tab>
+        <mat-tab label="PROFESSIONAL PROFILE"> 
+          <mat-card>
+            <mat-card-content>
+              <h4>About Me</h4>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field class="example-full-width">
+                    <textarea resizeToFitContent="true" matInput placeholder="Profile" name="About" [(ngModel)]="user.professionalProfile.name"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <div [ngStyle]="{'padding-top': '2em'}"></div>
+        </mat-tab>
+        <mat-tab label="DOCUMENTS">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-8">
+                <h4>Add New Document</h4>
+                <!-- <mat-error *ngIf="uploadReport"> {{ uploadReport }} </mat-error> -->
+                <!-- <form ngForm #formU="ngForm">
+                  <mat-form-field>
+                    <input matInput type="text" #docN name="docName" required [(ngModel)]="docName" placeholder="File Name">
+                    <mat-error *ngIf="docN.touched && !docN.valid">
+                      <div *ngIf="docN.errors.required">Document name is required</div>
+                    </mat-error>
+                  </mat-form-field>
+                  <input type="file" #file name="file" (change)="onFileChangeSelected($event)" required> <br>
+                  <button mat-stroked-button (click)="uploadFile(file)" [disabled]="!formU.valid && !uploadFileButton">Add File</button>
+                </form> -->
+
+
+                <form ngForm #formU="ngForm" (ngSubmit)="onFileUpload(formU)">
+                  <div class="row">
+                    <div class="col">
+                      <mat-form-field>
+                        <input matInput type="text" #docN="ngModel" ngModel name="docName" required  placeholder="File Name">
+                        <mat-error *ngIf="docN.touched && !docN.valid">
+                          <div *ngIf="docN.errors.required">Document name is required</div>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col pt-2">
+                      <input type="file" ngModel #fileField="ngModel" name="docFile" (change)="onFileChangeSelected($event)" required> <br>
+                      <mat-error *ngIf="fileField.touched && !fileField.valid">
+                        <span *ngIf="fileField.errors.required" class="red"> File is required </span>
+                      </mat-error>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                      <button mat-stroked-button [disabled]="!formU.valid">Add File</button>
+                    </div>
+                  </div>
+                </form>
+                <div class="pt-2"></div>
+                <div>
+                  <h4>List of Documents</h4>
+                  <p *ngIf="user.documents.length == 0; else documents">You have not uploaded any documents yet</p>
+                  <ng-template #documents>
+                    <table align="center" mat-table [dataSource]="user.documents" class="pt-2 mat-elevation-z8">
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="sn">
+                        <th mat-header-cell *matHeaderCellDef> SN. </th>
+                        <td mat-cell *matCellDef="let element; let i= index"> {{ i+1 }} </td>
+                      </ng-container>
+                    
+                      <!-- Course Code Column -->
+                      <ng-container matColumnDef="docName">
+                        <th mat-header-cell *matHeaderCellDef> Doc Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.docName}} </td>
+                      </ng-container>
+                    
+                      <!-- Status Status -->
+                      <ng-container matColumnDef="options">
+                          <th mat-header-cell *matHeaderCellDef> </th>
+                          <td mat-cell *matCellDef="let element"> 
+                              <button mat-stroked-button (click)="openViewer(element)">VIEW</button>
+                              &nbsp;
+                              <button mat-stroked-button color="danger" (click)="removeDoc(element)">DELETE</button>
+                          </td>
+                      </ng-container>
+                    
+                      <tr mat-header-row *matHeaderRowDef="['sn', 'docName', 'options']"></tr>
+                      <tr mat-row *matRowDef="let row; columns: ['sn', 'docName', 'options'];"></tr>
+                    
+                    </table>      
+      
+                  </ng-template>
+                </div>
+              </div>
+
+              <div class="col">
+
+              </div>
+            </div>
+          </div>
+         
+          <div [ngStyle]="{'padding-top': '2em'}"></div>
+        </mat-tab>
+      </mat-tab-group>  
+    </form>
+  </ng-template>
+</div>

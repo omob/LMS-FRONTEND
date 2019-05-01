@@ -1,0 +1,25 @@
+nav{
+    height: 60px;
+    background-color: #fafafa;
+    position: relative;
+    left: 40px;
+    right: 0px;
+    width: calc(100% - 40px);
+    padding-left: 10px;
+    border-left: 1px solid gray;
+}
+
+.navbar-nav{
+    padding-left: 10px;
+}
+.navbar-nav,
+.navbar-nav > li {
+  display: inline-block;
+}
+.username{
+    padding-left: 10px
+}
+
+.dee-icon{
+    color: #7a7a7a
+}

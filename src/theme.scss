@@ -1,5 +1,6 @@
 
 @import "~@angular/material/_theming";
+@include mat-core();
 
 //Define custom typography
 $app-typography: mat-typography-config( 
@@ -7,9 +8,34 @@ $app-typography: mat-typography-config(
 );
 @include angular-material-typography($app-typography);
 
+
+// $my-blue: (
+//   50: #1b1f59
+// );
+
+// $primary: mat-palette($my-blue);
 //end of custom typography
 
 //custom styles
+body{
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.pt-1{
+    padding-top: 0.5em;
+}
+.pt-2{
+    padding-top: 1em;
+}
+.pt-3{
+    padding-top: 1.5em;
+}
+.pt-4{
+    padding-top: 2em;
+}
+
 .p-d{
     padding: 20px;
 }
@@ -29,3 +55,31 @@ $app-typography: mat-typography-config(
 }
 
 
+$primary-color :#673ab7;
+$lightgray: rgb(247, 247, 247);
+
+//styling
+.mat-stroked-button.mat-primary{
+    color: #fff;
+    border-color: $primary-color ;
+    background-color: $primary-color ;
+    border-radius: 0;
+}
+
+.mat-raised-button.inverse{
+    color:$primary-color;
+    border: 2px solid;
+    border-color:$primary-color;
+    background: transparent;
+    font-weight: bold;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.gray-1{
+    background-color: $lightgray;
+}
+
+.primary-color{
+    color: $primary-color
+}

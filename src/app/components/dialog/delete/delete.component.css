@@ -1,0 +1,9 @@
+.mat-dialog-actions{
+    text-align: center;
+    margin: auto;
+}
+
+.mat-dialog-actions button{
+    margin: 10px;
+    width: 100px;
+}

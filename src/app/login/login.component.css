@@ -32,13 +32,19 @@ h2:after{
 
 .bannerDiv{
     height: 100vh;
-    border: 2px solid #000;
+    /* border: 2px solid #000; */
     border-bottom-left-radius: 30px;
     border-top-left-radius: 30px;
+    box-shadow: 0px 0px 4px 1px #1b1f59;
 }
 
 #login .col-4.col-md-3,
 #login .col-8.col-md-9{
     padding-left: 0;
     padding-right: 0;
+}
+
+.bannerDiv{
+    background: url(../../assets/images/login.png) top center;
+    background-size: cover;
 }

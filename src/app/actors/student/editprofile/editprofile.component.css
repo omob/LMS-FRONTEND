@@ -1,0 +1,64 @@
+.subnav p{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.subnav span{
+    color: gray;
+    font-size: 12px;
+}
+
+.red{
+    color: red;
+}
+
+.imageDiv{
+    position: relative;
+}
+
+.imageDiv img{
+    float: left;
+}
+
+.imageDiv .title{
+  position: absolute;
+  top: 20px;
+  font-size: 10px;
+}
+
+.imageDiv .username,
+.imageDiv .title{
+    text-indent: 5px;
+}
+
+.imageDiv{
+    width: 200px
+}
+
+.imageDiv .username{
+    position: absolute;
+    top: 35px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.mat-tab-label{
+    padding: 30px 24px !important;
+}
+
+#tabContent h4{
+    text-transform: uppercase;
+}
+
+#tabContent span{
+    color: gray;
+    font-size: 12px;
+}
+
+#tabContent p{
+    
+}
+
+.pb-3{
+    padding-bottom: 30px;
+}  

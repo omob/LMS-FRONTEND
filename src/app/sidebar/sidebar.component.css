@@ -1,0 +1,25 @@
+.navbar-nav > li {
+    margin-bottom: 20px;
+    color: rgba(204, 201, 201, 0.87)
+  }
+  
+  .navbar-nav{
+      padding: 0;
+      position: absolute;
+      top: calc(100% - 85%);
+      z-index: 200;
+  }
+  
+  .sidebar .mat-icon-button{
+      box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+      background-color: #ffffff;
+      color: #673ab7;
+  }
+  
+  .sidebar .mat-icon-button + span{
+      display: block;
+      font-size: 14px;
+      padding-top: 6px;
+  }
+  
+  

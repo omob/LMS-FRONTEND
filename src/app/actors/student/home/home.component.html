@@ -1,0 +1,152 @@
+<div id="contentDiv">
+  <!-- <div class="full preloader">
+    <span class="loading"></span>
+  </div> -->
+  <h4 class="title">Student's Dashboard</h4>
+  <mat-divider></mat-divider>
+  <div class="container-fluid">
+    <div class="row pt-3">
+      <div class="col-12 col-lg-8">
+        <div class="row dashboardLinksDiv" align="center">
+          <div class="col-sm-6 col-md-4 col-12">
+            <mat-card routerLink="/student/courses-register">
+              <mat-card-content>
+                <mat-icon>
+                  border_color
+                </mat-icon>
+                <p class="title"> REGISTRATION</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-sm-6 col-md-4 col-12">
+            <mat-card routerLink="/student/courses">
+              <mat-card-content>
+                <mat-icon>
+                   library_books
+                </mat-icon>
+                <p class="title"> MY COURSES</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-sm-6 col-md-4 col-12">
+            <mat-card>
+              <mat-card-content>
+                <mat-icon>
+                    assignment_turned_in
+                </mat-icon>
+                <p class="title"> RESULTS</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+  
+          <div class="w-100 d-none d-md-block"></div> <!-- breaker-->
+  
+          <div class="col-sm-6 col-md-4 col-12">
+              <mat-card>
+                <mat-card-content>
+                  <mat-icon>
+                    <span class="fas fa-chart-pie"></span>
+                  </mat-icon>
+                  <p class="title"> BEHAVIORAL ANALYSIS </p>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <!-- <div class="col-sm-6 col-md-4 col-12">
+              <mat-card>
+                <mat-card-content>
+                  <mat-icon>
+                      <span class="far fa-money-bill-alt"></span>
+                  </mat-icon>
+                  <p class="title"> PAYMENT</p>
+                </mat-card-content>
+              </mat-card>
+            </div> -->
+            <div class="col-sm-6 col-md-4 col-12">
+              <mat-card>
+                <mat-card-content>
+                  <mat-icon>
+                    event
+                  </mat-icon>
+                  <p class="title"> NEWS & EVENTS</p>
+                </mat-card-content>
+              </mat-card>
+            </div>
+        </div>
+  
+        <mat-divider></mat-divider>
+
+        <h4 class="title ">Assignment</h4>
+  
+        <table align="center" mat-table [dataSource]="myAssignment" class="pt-2 mat-elevation-z8">
+  
+          <!--- Note that these columns can be defined in any order.
+                The actual rendered columns are set as a property on the row definition" -->
+        
+          <!-- Position Column -->
+          <ng-container matColumnDef="_id">
+            <th mat-header-cell *matHeaderCellDef> SN. </th>
+            <td mat-cell *matCellDef="let element"> {{element._id}} </td>
+          </ng-container>
+        
+          <!-- Course Code Column -->
+          <ng-container matColumnDef="courseCode">
+            <th mat-header-cell *matHeaderCellDef> Course Code </th>
+            <td mat-cell *matCellDef="let element"> {{element.courseCode}} </td>
+          </ng-container>
+        
+          <!-- Status Status -->
+          <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status</th>
+              <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+  
+          <!-- Weight due Date -->
+          <ng-container matColumnDef="dueDate">
+            <th mat-header-cell *matHeaderCellDef> Due Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.dueDate}} </td>
+          </ng-container>
+        
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="options">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element" class="options">  
+              <button mat-stroked-button class="inverse" [routerLink]="['/assignment', element._id ]">VIEW</button>
+              <button  mat-stroked-button *ngIf="element.status == 'pending'" mat-button [routerLink]="['/assignment', element._id]" [queryParams]="{submit: true}">SUBMIT</button>
+              <button  mat-stroked-button *ngIf="element.status == 'completed'" mat-button [routerLink]="['/assignment', element._id]" [queryParams]="{edit: true}">EDIT</button>
+            </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>      
+  
+      </div>
+      <div class="col-12 col-lg-4" style="max-width: 400px">
+    
+        <report></report>
+        
+        <div class="pt-3"></div>
+        
+        <h4 class="title">Calender</h4>
+        <div class="calender">
+            <mat-calendar [selected]="" (selectedChange)="selectedDate = $event">
+            </mat-calendar>
+        </div>
+        <div class="pt-3"></div>
+  
+        <h4 class="title">News & Events</h4>
+        <ng-template #showEvents>
+          <mat-list>
+            <mat-list-item>
+              <h5 mat-line>Introduction to ....</h5>
+              <p mat-line>24-07-2019</p>
+            </mat-list-item>
+          </mat-list>
+        </ng-template>
+        <p  *ngIf="!events.length; else showEvents">No info at the momemnt... Check back later.</p>
+
+      </div>
+    </div>
+
+  </div>
+</div>

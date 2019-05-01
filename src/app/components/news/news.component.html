@@ -1,0 +1,21 @@
+<div id="news">
+  <div class="carousel">
+    <div *ngFor="let new of news" 
+      [ngStyle]="{ 
+        'width': '350px',
+        'margin-right': '20px'
+      }" 
+      class="newsDiv carousel-item">
+      <h3> {{new.title}} </h3>
+      <div>
+        <div class="newsbody">
+          <p>{{new.body.substr(0, 150)}}...
+            <span><a (click)="popup(new)" >[read more]</a></span>
+          </p>
+         
+        </div> 
+        <p class="date d-block"> {{ new.date }} </p>
+      </div>
+    </div>
+  </div>
+</div>

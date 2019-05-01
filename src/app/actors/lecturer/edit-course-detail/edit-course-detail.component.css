@@ -1,0 +1,47 @@
+#tabContent label{
+    font-size: 16px;
+    padding-top: 22px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.course_ul li{
+    cursor: grab;
+}
+
+.contentInner{
+    padding: 10px;
+    box-shadow: 0px 0px 1px rgb(192, 192, 192);
+}
+
+/* .mat-form-field{
+    width: 80%;
+} */
+
+
+.fillCourseAssignment .mat-form-field,
+.courseAssignments .body .mat-form-field{
+    width: 100%;
+}
+
+.mat-list-item:hover{
+    background-color: rgb(245, 245, 245);
+    cursor: pointer;
+}
+
+.mat-list-item .mat-icon{
+    position: absolute;
+    right: 10%;
+
+}
+
+button.updateCourse{
+    text-align: right;
+    float: right;
+    position: relative;
+    top: -8px;
+}
+
+button#addOutline{
+    /* float: right; */
+}

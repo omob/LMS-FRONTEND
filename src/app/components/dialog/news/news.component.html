@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>{{ data?.title }}</h2>
+<mat-dialog-content>
+  <!-- <p *ngIf="loading">Loading...</p>
+  <mat-error *ngIf="!error.success"> {{ error.message }}</mat-error> -->
+    {{ data?.body}}
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="secondary" mat-dialog-close>Close</button>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <!-- <button mat-button [mat-dialog-close]="true">Yes</button> -->
+</mat-dialog-actions>
