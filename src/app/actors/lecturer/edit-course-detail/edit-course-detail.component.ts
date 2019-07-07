@@ -33,14 +33,14 @@ export class LecturerEditCourseDetailComponent implements OnInit {
   courseGroup: FormGroup;
 
   constructor(
-    private courseService: CourseService, 
-    private route: ActivatedRoute, 
+    private courseService: CourseService,
+    private route: ActivatedRoute,
     private router: Router,
     private auth: AuthService,
     private dialog: MatDialog,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar) { 
-      
+    private snackBar: MatSnackBar) {
+
       this.courseGroup = fb.group({
         courseOutline: fb.group({
           week: ['', Validators.required],
@@ -52,7 +52,7 @@ export class LecturerEditCourseDetailComponent implements OnInit {
           file: []
         }),
         courseAssignment: fb.group({
-          id: [''], 
+          id: [''],
           question: ['', Validators.required],
           dueDate: [''],
           createdDate: [ new Date().toDateString() ]
@@ -73,10 +73,10 @@ export class LecturerEditCourseDetailComponent implements OnInit {
 
     try{
       let result = await this.courseService.getCourse(
-        this.courseId, 
-        this.auth.loggedInUser().position, 
+        this.courseId,
+        this.auth.loggedInUser().position,
         { session: this.session, semester: this.semester });
-  
+
       if(!result.success){
         console.log(result)
         this.message = result.message;
@@ -98,7 +98,7 @@ export class LecturerEditCourseDetailComponent implements OnInit {
     let localCourse = Object.assign({}, result.data);
     this.course =  extractDataFromCourse(localCourse, this.session, this.semester);
 
-    //extract the current session and semester from the 
+    //extract the current session and semester from the
     this.totalStudents = result["students"]; //this is a temporaray hack as i'm currently unable to add the student property to the data key
   }
 
@@ -107,12 +107,11 @@ export class LecturerEditCourseDetailComponent implements OnInit {
   }
 
   addOutline( $event: Event, outline: HTMLInputElement) : void{
-    console.log("here")
     this.topics.push( new FormControl({
       topic: outline.value
     }));
 
-    outline.value = "";
+    outline.value = '';
   }
 
   removeOutline( outline: FormControl) : void{
@@ -129,7 +128,7 @@ export class LecturerEditCourseDetailComponent implements OnInit {
     //append to the course property
     let value = Object.assign({}, this.courseGroup.value.courseOutline);
     this.course.courseOutline.push({...value});
-    //reset 
+    //reset
     this.topics.controls = [];
     this.courseGroup.get('courseOutline.outlines').reset();
     this.courseGroup.get('courseOutline.week').reset();
@@ -153,14 +152,14 @@ export class LecturerEditCourseDetailComponent implements OnInit {
     button["disabled"] = true;
 
     let response = await this.courseService.update(
-      this.courseId, 
-      this.auth.loggedInUser().position, 
+      this.courseId,
+      this.auth.loggedInUser().position,
       { outlines: this.course.courseOutline, session: this.session, semester: this.semester},
       "courseOutline"
       );
 
     this.snackBar.openFromComponent(SnackBarComponent,{
-      data:  (response.success ? 'updated!' : 'could not update'), 
+      data:  (response.success ? 'updated!' : 'could not update'),
       verticalPosition: 'top'
     });
 
@@ -183,7 +182,7 @@ export class LecturerEditCourseDetailComponent implements OnInit {
       console.log(response);
 
       this.snackBar.openFromComponent(SnackBarComponent,{
-        data:  (response.success ? 'Added!' : 'Could not add'), 
+        data:  (response.success ? 'Added!' : 'Could not add'),
         verticalPosition: 'top'
       });
 
@@ -219,13 +218,13 @@ export class LecturerEditCourseDetailComponent implements OnInit {
 
   async removeCourseMaterial(material): Promise<void>{
     let response = await this.courseService.update(this.courseId, this.auth.loggedInUser().position, {
-      session: this.session, 
+      session: this.session,
       semester: this.semester,
       material
     }, "courseMaterial");
 
     this.snackBar.openFromComponent(SnackBarComponent,{
-      data:  (response.success ? 'Deleted!' : 'could not delete'), 
+      data:  (response.success ? 'Deleted!' : 'could not delete'),
       verticalPosition: 'top'
     });
 
@@ -244,7 +243,7 @@ export class LecturerEditCourseDetailComponent implements OnInit {
 
   ngOnDestroy(): void{
     if(this.subscription) this.subscription.unsubscribe();
-    
+
     console.log("Destroyed")
   }
 
@@ -254,12 +253,12 @@ export class LecturerEditCourseDetailComponent implements OnInit {
     try{
       let response = await this.courseService.update(this.courseId, this.auth.loggedInUser().position, {
         assignments: this.course.assignment,
-        session: this.session, 
+        session: this.session,
         semester: this.semester
       }, "assignments");
 
       this.snackBar.openFromComponent(SnackBarComponent,{
-        data:  (response.success ? 'Success updating assignments!' : 'Error updating assignments'), 
+        data:  (response.success ? 'Success updating assignments!' : 'Error updating assignments'),
         verticalPosition: 'top'
       });
 
@@ -271,7 +270,7 @@ export class LecturerEditCourseDetailComponent implements OnInit {
 
     }catch(e){
       this.snackBar.openFromComponent(SnackBarComponent,{
-        data:  'Error completing the operation at the moment', 
+        data:  'Error completing the operation at the moment',
         verticalPosition: 'top'
       });
 
@@ -280,19 +279,19 @@ export class LecturerEditCourseDetailComponent implements OnInit {
 
   }
 
-  async addAssignment(): Promise<void>{ //saves assignments 
+  async addAssignment(): Promise<void>{ //saves assignments
     let formData = this.courseGroup.get('courseAssignment').value;
     formData.id = new Date().getTime();
 
     try{
       let response = await this.courseService.update(this.courseId, this.auth.loggedInUser().position, {
         assignment: formData,
-        session: this.session, 
+        session: this.session,
         semester: this.semester
       }, "assignment");
 
       this.snackBar.openFromComponent(SnackBarComponent,{
-        data:  (response.success ? 'Success posting assignment!' : 'Error posting assignment'), 
+        data:  (response.success ? 'Success posting assignment!' : 'Error posting assignment'),
         verticalPosition: 'top'
       });
 
@@ -302,7 +301,7 @@ export class LecturerEditCourseDetailComponent implements OnInit {
       }
     }catch(e){
       this.snackBar.openFromComponent(SnackBarComponent,{
-        data: "Error adding assignment at the moment", 
+        data: "Error adding assignment at the moment",
         verticalPosition: 'top'
       });
       console.log(e);

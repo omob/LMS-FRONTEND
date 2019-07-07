@@ -1,12 +1,11 @@
-import { MatDialog } from '@angular/material';
-import { FileviewerComponent } from '../../../components/dialog/fileviewer/fileviewer.component';
-import { DialogData } from './../../../model/dialogData';
-import { AuthService } from 'src/app/services/auth.service';
-import { Lecturer } from './../../../model/lecturer';
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/services/user.service';
-import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
+import { FileviewerComponent } from '../../../components/dialog/fileviewer/fileviewer.component';
+import { Lecturer } from './../../../model/lecturer';
 
 @Component({
   selector: 'app-edit-profile',
