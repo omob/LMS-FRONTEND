@@ -1,27 +1,56 @@
-# ErpFrontEnd
+# Learning Management System 
+### 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+A learning management system is an application that is
+helpful within the administration hierarchy of a university; it aids the documentation,
+tracking, lecture and delivery of academic courses, coaching programs, or other education
+and development programs.
 
-## Development server
+This application currently consists of three (3) actors
+`lecturer`, `student` and `admin`
 
+## Functional Requirement
+- The system shall enable a user to login or register if user is a student
+- The system shall enable a user to recover password if lost or forgotten
+- The system shall enable a user `(student)` view courses pertaining to his/her department
+- The system shall enable a user `(student)` register courses for each semester
+- The system shall enable a user manage his/her profile
+- The system shall enable a user `(student)` view assignment for each courses and also
+submit when done
+- The system shall enable a user `(student)` view results of courses done
+- The system shall enable a user view news and events
+- The system shall enable a user view timetable
+- The system shall enable a user `(student)` send and receive messages from his/her
+lecturer
+- The system shall enable a user `(lecturer)` view courses
+- The system shall enable a user `(lecturer)` add course materials to each of his/her
+courses
+- The system shall enable a user `(lecturer)` manage attendance for each courses
+- The system shall enable a user `(student)` view the lecturers teaching the courses
+enrolled for
+- The system shall enable a user `(lecturer)` view the students that enrolled for his courses
+- The system shall enable a user `(lecturer)` add results for his/her courses
+- The system shall enable a user `(lecturer)` manage assignments for his/her courses
+- The system shall enable a user `(lecturer)` send messages to his/her students or fellow
+lecturers
+- The system shall enable a user `(administrator)` manage departments (add/delete)
+- The system shall enable a user `(administrator)` manage employees
+- The system shall enable a user `(administrator)` manage different roles (add user to a
+role)
+- The system shall enable a user that has appropriate role(e.g., `admin`) manage
+news/events
+
+
+### Installation
+
+```
+npm install 
+```
+ 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Please make sure to update tests as appropriate.
