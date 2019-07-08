@@ -14,32 +14,32 @@ import { MatAutocompleteDefaultOptions, MatTableDataSource } from '@angular/mate
 })
 
 export class CourseRegisterComponent implements OnInit {
-  searchCourseFormField: FormControl; 
+  searchCourseFormField: FormControl;
 
   coursesList: Course[] = [];
 
   filteredOptions: Observable<Course[]>;
   course: any;
   sessions: any[] = [];
-  
+
   coursesTableData: any[] = [];
   displayedColumns: any[] = [];
-  dataSource: MatTableDataSource<Course[]>
+  dataSource: MatTableDataSource<Course[]>;
 
   constructor(private courseService: CourseService, private router: Router) {
-    this.searchCourseFormField= new FormControl('', Validators.required);
-   
-    this.course = { session: "", semester: "" }
+    this.searchCourseFormField = new FormControl('', Validators.required);
+
+    this.course = { session: '', semester: '' };
     this.sessions = this.courseService.getSessions();
-    this.displayedColumns= [ 'sn', 'courseCode', 'courseName', 'lecturer', 'unit', 'options'];
+    this.displayedColumns = [ 'sn', 'courseCode', 'courseName', 'lecturer', 'unit', 'options'];
 
   }
 
   async ngOnInit() {
-    let result  = await this.courseService.getAllCourses();
+    const result  = await this.courseService.getAllCourses();
     this.coursesList = result.data;
 
-    if(this.coursesList){
+    if (this.coursesList) {
       this.filteredOptions = this.searchCourseFormField.valueChanges
         .pipe(
           startWith<string | Course>(''),
@@ -52,74 +52,73 @@ export class CourseRegisterComponent implements OnInit {
   displayFn(courseN?: Course): string | undefined {
     return courseN ? courseN.courseName : undefined;
   }
-  
+
   private _filter(name: string): Course[] {
     const filterValue = name.toLowerCase();
 
     return this.coursesList.filter(option => (option.courseCode.toLowerCase()).indexOf(filterValue) === 0);
   }
 
-  private resetFormControl(){
-    this.searchCourseFormField.setValue("");
+  private resetFormControl() {
+    this.searchCourseFormField.setValue('');
     this.searchCourseFormField.setErrors(null);
   }
 
-  addCourse(){
-    if(typeof this.searchCourseFormField.value !== 'object') return;
+  addCourse() {
+    if (typeof this.searchCourseFormField.value !== 'object') { return; }
 
-    //check is the course already exist in the array
-    if (this.coursesTableData.findIndex(x => x.courseCode == this.searchCourseFormField.value.courseCode) != -1) return;
-   
-    console.log(this.searchCourseFormField.value)
+    // check is the course already exist in the array
+    if (this.coursesTableData.findIndex(x => x.courseCode == this.searchCourseFormField.value.courseCode) != -1) { return; }
 
-     let extract =  this.extractDataFromCourseList(this.searchCourseFormField.value);
-    //add the course
+    console.log(this.searchCourseFormField.value);
+
+     const extract =  this.extractDataFromCourseList(this.searchCourseFormField.value);
+    // add the course
     this.coursesTableData.splice(0, 0, extract);
     this.resetFormControl();
 
-    this.dataSource = new MatTableDataSource(this.coursesTableData)
+    this.dataSource = new MatTableDataSource(this.coursesTableData);
   }
 
-  private extractDataFromCourseList(course){
-      console.log(course.session)
-      let fields = course.session.find(c => c.sessionName == this.course.session);
-      return { ...course, ...fields }
+  private extractDataFromCourseList(course) {
+      console.log(course.session);
+      const fields = course.session.find(c => c.sessionName == this.course.session);
+      return { ...course, ...fields };
  }
 
-  removeCourse(course: Course){
-    let courseIndex = this.coursesTableData.indexOf(course);
+  removeCourse(course: Course) {
+    const courseIndex = this.coursesTableData.indexOf(course);
     this.coursesTableData.splice(courseIndex, 1);
 
-    this.dataSource = new MatTableDataSource(this.coursesTableData)
+    this.dataSource = new MatTableDataSource(this.coursesTableData);
   }
 
-  async submitCourse(){
-    
-    let formData = {
-      "session": this.course.session,
-      "semester": {
-        "name": this.course.semester,
-        "courses": this.getCoursesId()
+  async submitCourse() {
+
+    const formData = {
+      'session': this.course.session,
+      'semester': {
+        'name': this.course.semester,
+        'courses': this.getCoursesId()
       }
-    }
+    };
 
-    try{
-      let result = await this.courseService.add(formData);
-      if(result.success) this.router.navigateByUrl('student/courses');
+    try {
+      const result = await this.courseService.add(formData);
+      if (result.success) { this.router.navigateByUrl('student/courses'); }
 
-    }
-    catch(e) {
+    } catch (e) {
       console.log(e);
     }
 
   }
 
-  private getCoursesId(){
-    let coursesId:any[] = this.coursesTableData.map(course => course._id);
+  private getCoursesId() {
+    const coursesId: any[] = this.coursesTableData.map(course => course._id);
     return coursesId;
   }
 
-  goBack(): void{
+  goBack(): void {
     this.router.navigateByUrl('/student/courses');
   }
 }

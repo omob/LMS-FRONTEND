@@ -6,82 +6,83 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { ServerResponse } from '../model/serverResponse';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
 
-export class AuthService {
+export class AuthService extends DataService {
 
-  URL ="http://127.0.0.1:3000";
   helper = new JwtHelperService();
   user: any;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(public http: HttpClient, private router: Router) {
+    super(http);
   }
 
-  login(detail): Observable<ServerResponse>{
+  login(detail): Observable<ServerResponse> {
 
-    let url = this.URL + ((detail.position != 'student') ? '/api/staff/login' : '/api/student/login');
-    
+    const url = this.URL + ((detail.position !== 'student') ? '/api/staff/login' : '/api/student/login');
+
     return this.http.post<ServerResponse>(url, JSON.stringify(detail), this.getHeaders())
       .pipe(
         map(response => {
-          if(response.success && response.token){
+          if (response.success && response.token) {
             localStorage.setItem('token', response.token);
           }
           return response;
         }),
         catchError(err => of(err))
-      )
+      );
   }
 
-  
-  getHeaders(){
+
+  getHeaders() {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'Authorization': this.getToken() || ""
+        'Authorization': this.getToken() || ''
       })
     };
-    
+
     return httpOptions;
   }
 
-  getToken(): string{
+  getToken(): string {
     const token = localStorage.getItem('token');
-    if(!token) return null;
+    if (!token) { return null; }
 
     return token;
   }
 
-  loggedInUser():Token{
+  loggedInUser(): Token {
     const decodedToken = this.helper.decodeToken(this.getToken());
     return decodedToken.user;
   }
 
-  isLoggedIn(): boolean{
-    if (this.isExpired()){
+  isLoggedIn(): boolean {
+    if (this.isExpired()) {
       localStorage.removeItem('token');
       return false;
-    }
-    else return true;
+    } else { return true; }
   }
 
-  isExpired(): boolean{
+  isExpired(): boolean {
     const isExpired = this.helper.isTokenExpired(this.getToken());
-    if(isExpired) return true;
+    console.log('isToken Expired: ', isExpired)
+    if (isExpired) { return true; }
   }
-  
-  logout(): void{
+
+  logout(): void {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 
-} 
+}
 
-interface Token{
+interface Token {
   _id: string;
   name: string;
   email: string;
