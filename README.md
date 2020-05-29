@@ -49,6 +49,19 @@ npm install
  
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+### To run the live [demo](https://learning-management-syst-7a244.web.app/), you can use the login details below
+
+<b>Lecturer login</b> <br>
+`username -james.williams@gmail.com`<br>
+`password - abodunrin` <br>
+`Role- Lecturer` <br>
+`Lecturer ID` - 111111
+
+<b>Student Login</b> <br>
+`username- john.doe@gmail.com` <br>
+`password - abodunrin` <br>
+`Role- student`
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
