@@ -49,7 +49,9 @@ npm install
  
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-### To run the live [demo](https://learning-management-syst-7a244.web.app/), you can use the login details below
+The repo for the Backend of this application is at [LMS-Backend-API](https://github.com/omob/LMS-Backend-API)
+
+### To test the live [demo app](https://learning-management-syst-7a244.web.app/), you can use the login details below
 
 <b>Lecturer login</b> <br>
 `username -james.williams@gmail.com`<br>
